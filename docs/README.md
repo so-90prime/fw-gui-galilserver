@@ -1,6 +1,38 @@
 # 90Prime galilserver and fw-gui code
 
+'''
 STATUS
-    Gets the galil status.
-    Args: NONE
-        test
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+SEND
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+RUN
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+SHOW
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+GETCLIENTNUM
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+SET
+    Description : 
+    Arguments   : 
+    Returns     : 
+
+FOCUS
+    Description : 
+    Arguments   : 
+    Returns     : 
+'''
