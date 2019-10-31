@@ -1,6 +1,6 @@
 # 90Prime galilserver and fw-gui code
 
-'''
+```
 STATUS
     Description : 
     Arguments   : 
@@ -35,4 +35,4 @@ FOCUS
     Description : 
     Arguments   : 
     Returns     : 
-'''
+```
