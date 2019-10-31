@@ -15,61 +15,73 @@ end
 #i.e. "fwinitialized:yes" or "loadedfiler:r"
 #
 $fwguistatefile = "/home/primefocus/fwgui.state"
+=begin 
+example content of fwgui.state
+	selectedfilter:none
+	initialized:yes
+	filterlist:g-u-z-i-r-bokr
+	loaded?:no
+	loadedfilter:none
+	filtersread:yes
+	loadedfiler:jammed
+=end
 $fwguistatehash = Hash.new
 
 def readfwguistatefile
-	if $state = File.open($fwguistatefile, "r")
-       		 puts "Cannot open gui statefile for reading. No state known"
+	#BUG added ! because this should be the inverse
+	# reads file from location /home/primefocus/fwgui.state
+	if !$state = File.open($fwguistatefile, "r")
+       	puts "Cannot open #{$fwguistatefile}. No initial state known"
 	end
 	$state.each_line do |l|
-		puts "l #{l}"
+		puts "Reading fwgui.state line: #{l}"
 		la = l.split(":")
 		$fwguistatehash[la[0]] = la[1]
-		puts "read state #{la[0]} #{la[1]}"
+		puts "Setting state #{la[0]} #{la[1]}"
 	end
 	$state.close
 end
 
 def writefwguistatefile
-        if !$state = File.open($fwguistatefile, "w")
-                puts "Cannot open fwgui state file for writing. No state saved."
-                return(1)
-        end
-        $fwguistatehash.each_key do |k|
-                $state.puts "#{k}:#{$fwguistatehash[k]}"
-		puts "writing state #{k}:#{$fwguistatehash[k]}"
-        end
+	if !$state = File.open($fwguistatefile, "w")
+			"Cannot open #{$fwguistatefile}. No initial state known."
+			return(1)
+	end
+	$fwguistatehash.each_key do |k|
+		$state.puts "#{k}:#{$fwguistatehash[k]}"
+		puts "Writing state #{k}:#{$fwguistatehash[k]} to #{$fwguistatefile}"
+	end
 	$state.close
 end
 
 
 class Filter
-	# attr_reader method makes veriables public
-	
-                attr_reader :filtmagcode, :filtshortname, :filtcolor
-        def initialize(filtstr)
-                fsa = filtstr.split(' ')
-                @filtmagcode = fsa[0].to_i
-                @filtshortname = fsa[1]
-                @filtcolor  = fsa[3]
-                @filtercolor = Hash.new
-        end
+	# attr_reader method makes variables public
+    attr_reader :filtmagcode, :filtshortname, :filtcolor
+	def initialize(filtstr)
+		fsa = filtstr.split(' ')
+		@filtmagcode = fsa[0].to_i
+		@filtshortname = fsa[1]
+		@filtcolor  = fsa[3]
+		@filtercolor = Hash.new
+	end
 end
 
 class Galil
 	def initialize(telescope, instrument, serveraddress, serverport)
 		#@cs =  TCPSocket.new(serveraddress, serverport)
+		puts "Opening galil socket at localhost, port #{serverport}"
 		@cs =  TCPSocket.new("localhost", serverport)
 		rescue SystemCallError =>sce
-                e = "#{sce}"
-                if /e/.match("Connection refused") != nil
-                        $stderr.print "Connection refused. Will sleep 30 seconds and retry connecting\n";
-                        sleep 30
-                        retry
-                end
-                        $stderr.print "System Call Error: " + $!
-                raise
-		puts "Connected to galilserver"
+			e = "#{sce}"
+			if /e/.match("Connection refused") != nil
+				puts "Connection refused. Sleeping 30 seconds and retrying."
+				sleep 30
+				retry
+			end
+				$stderr.print "System Call Error: " + $!
+			raise
+		puts "Connected to galilserver."
 		initcon = @cs.recv(100)
 		puts "initcon: #{initcon}"
 	end
@@ -78,24 +90,23 @@ class Galil
 		try = 1
 		good = false
 		while !good
-			puts "try #{try}"
+			puts "Attempt #{try}: Sending: #{s}"
 			@cs.send(s, 0)
 			rbuf = String.new
 			rbuf = @cs.recv(300)
-			puts "length of rbuf #{rbuf.length}"
-			puts "rbuf: #{rbuf}"
+			puts "Length #{rbuf.length}: Received: #{rbuf}"
 			if /\?/.match(rbuf) != nil
 				puts "Error: #{$error}"
 				try = try + 1
 			elsif /OK:/.match(rbuf)
-				puts "OK from send"
+				puts "Send was OK."
 				good = true
 			else
-				puts "Bad receive from send"
+				puts "Send was BAD. Trying again."
 				try = try + 1
 			end
 			if try > 20
-				puts "Too many retries Bailing"
+				puts "Too many retries. Stopping."
 				rbuf = "?"
 				break
 			end
@@ -106,7 +117,7 @@ class Galil
 	def nullrecv
 		junk = String.new
 		junk = @cs.recv(100)
-		puts "got junk #{junk}"
+		puts "Null Received: #{junk}"
 	end
 
 	def sendreadn(s, n)
@@ -120,9 +131,9 @@ class Galil
 			rl = rbuf.length
 			buf = buf + rbuf
 			rn = rn - rl
-			puts "need #{rn} more bytes"
+			puts "Waiting for #{rn} more bytes."
 		end
-		puts "got all #{n} bytes"
+		puts "All #{n} bytes received."
 		return buf[4,buf.length]
 	end
 		
@@ -277,6 +288,7 @@ readfwguistatefile
 $filterinfo = Array.new
 $filterhash = Hash.new
 $loadpos = [-1, 3, 2, 1, 0, 5, 4]
+puts "Reading #{infofile}"
 infofile.each_line do |l|
         next if l.match('#')
 	ff = Filter.new(l.chomp)
@@ -285,7 +297,7 @@ infofile.each_line do |l|
 	fc = ff.filtcolor
 	$filterinfo[fk] = ff
 	$filterhash[sn] = fk
-	puts "filter mag code #{fk} shortname #{sn} color #{fc}"
+	puts "Filter Magnet Code: #{fk} Shortname: #{sn} Color: #{fc}"
 end
 #array for loaded filters
 #open socket to galil
@@ -443,7 +455,7 @@ filtrdtooltip.set_tip($filtrdbut, "Click to read filter codes", nil)
 $filtrdbut.signal_connect("clicked") do
 	$fwguistatehash["filtersread"] = "no"
 	$fwguistatehash["filterlist"] = ""
-        puts "reading filters"
+        puts "Reading filters."
 	filtrd
 	fl = ""
 	(0..5).each do |e|
@@ -503,7 +515,7 @@ end
 #disable populate button if filter in beam
 r = $gc.send("SHOW FILTISIN")
 if /OK:/.match(r) == nil
-	puts "Cannot read filtisin"
+	puts "Error: Cannot read filters."
 else	
 	d = r.split(/:/, 2)
 	fin = d[1].to_i
