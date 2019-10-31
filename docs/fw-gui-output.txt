@@ -1,0 +1,1554 @@
+Cannot open gui statefile for reading. No state known
+l selectedfilter:BC
+read GUI state selectedfilter BC
+l initialized:yes
+read GUI state initialized yes
+l filterlist:09-Open-Bob-sagev-R-07
+read GUI state filterlist 09-Open-Bob-sagev-R-07
+l loaded?:no
+read GUI state loaded? no
+l loadedfilter:none
+read GUI state loadedfilter none
+l filtersread:yes
+read GUI state filtersread yes
+l loadedfiler:jammed
+read GUI state loadedfiler jammed
+filter mag code 0 shortname  color 
+filter mag code 1 shortname Open color 
+filter mag code 2 shortname g color 
+filter mag code 3 shortname r color 
+filter mag code 4 shortname i color 
+filter mag code 5 shortname z color 
+filter mag code 6 shortname u color 
+filter mag code 8 shortname sagev color 
+filter mag code 10 shortname I color 
+filter mag code 11 shortname bokr color 
+filter mag code 12 shortname B color 
+filter mag code 13 shortname HA658 color 
+filter mag code 14 shortname R color 
+filter mag code 15 shortname V color 
+filter mag code 16 shortname DD051 color 
+filter mag code 17 shortname CN color 
+filter mag code 18 shortname Bob color 
+filter mag code 19 shortname strumu color 
+filter mag code 23 shortname U color 
+filter mag code 33 shortname batc6 color 
+filter mag code 38 shortname uJ color 
+filter mag code 39 shortname unknwn color 
+filter mag code 41 shortname H2O color 
+filter mag code 45 shortname BC color 
+filter mag code 46 shortname CN color 
+filter mag code 47 shortname C2 color 
+filter mag code 48 shortname jam color 
+filter mag code 0 shortname  color 
+filter mag code 0 shortname 00 color 
+filter mag code 7 shortname 07 color 
+filter mag code 9 shortname 09 color 
+filter mag code 20 shortname 14 color 
+filter mag code 21 shortname 15 color 
+filter mag code 22 shortname 16 color 
+filter mag code 24 shortname 18 color 
+filter mag code 25 shortname 19 color 
+filter mag code 26 shortname 1a color 
+filter mag code 27 shortname 1b color 
+filter mag code 28 shortname 1c color 
+filter mag code 29 shortname 1d color 
+filter mag code 30 shortname 1e color 
+filter mag code 31 shortname 1f color 
+filter mag code 32 shortname 20 color 
+filter mag code 34 shortname 22 color 
+filter mag code 35 shortname 23 color 
+filter mag code 36 shortname 24 color 
+filter mag code 37 shortname 25 color 
+filter mag code 40 shortname 28 color 
+filter mag code 42 shortname 2a color 
+filter mag code 43 shortname 2b color 
+filter mag code 44 shortname 2c color 
+filter mag code 49 shortname 31 color 
+filter mag code 50 shortname 32 color 
+filter mag code 51 shortname 33 color 
+filter mag code 52 shortname 34 color 
+filter mag code 53 shortname 35 color 
+filter mag code 54 shortname 36 color 
+filter mag code 55 shortname 37 color 
+filter mag code 56 shortname 38 color 
+filter mag code 57 shortname 39 color 
+filter mag code 58 shortname 3a color 
+filter mag code 59 shortname 3b color 
+filter mag code 60 shortname 3c color 
+filter mag code 61 shortname 3d color 
+filter mag code 62 shortname 3e color 
+filter mag code 63 shortname 3f color 
+filter mag code 64 shortname 40 color 
+filter mag code 65 shortname 41 color 
+filter mag code 66 shortname 42 color 
+filter mag code 67 shortname 43 color 
+filter mag code 68 shortname 44 color 
+filter mag code 69 shortname 45 color 
+filter mag code 70 shortname 46 color 
+filter mag code 71 shortname 47 color 
+filter mag code 72 shortname 48 color 
+filter mag code 73 shortname 49 color 
+filter mag code 74 shortname 4a color 
+filter mag code 75 shortname 4b color 
+filter mag code 76 shortname 4c color 
+filter mag code 77 shortname 4d color 
+filter mag code 78 shortname 4e color 
+filter mag code 79 shortname 4f color 
+filter mag code 80 shortname 50 color 
+filter mag code 81 shortname 51 color 
+filter mag code 82 shortname 52 color 
+filter mag code 83 shortname 53 color 
+filter mag code 84 shortname 54 color 
+filter mag code 85 shortname 55 color 
+filter mag code 86 shortname 56 color 
+filter mag code 87 shortname 57 color 
+filter mag code 88 shortname 58 color 
+filter mag code 89 shortname 59 color 
+filter mag code 90 shortname 5a color 
+filter mag code 91 shortname 5b color 
+filter mag code 92 shortname 5c color 
+filter mag code 93 shortname 5d color 
+filter mag code 94 shortname 5e color 
+filter mag code 95 shortname 5f color 
+filter mag code 96 shortname 60 color 
+filter mag code 97 shortname 61 color 
+filter mag code 98 shortname 62 color 
+filter mag code 99 shortname 63 color 
+filter mag code 100 shortname 64 color 
+filter mag code 101 shortname 65 color 
+filter mag code 102 shortname 66 color 
+filter mag code 103 shortname 67 color 
+filter mag code 104 shortname 68 color 
+filter mag code 105 shortname 69 color 
+filter mag code 106 shortname 6a color 
+filter mag code 107 shortname 6b color 
+filter mag code 108 shortname 6c color 
+filter mag code 109 shortname 6d color 
+filter mag code 110 shortname 6e color 
+filter mag code 111 shortname 6f color 
+filter mag code 112 shortname 70 color 
+filter mag code 113 shortname 71 color 
+filter mag code 114 shortname 72 color 
+filter mag code 115 shortname 73 color 
+filter mag code 116 shortname 74 color 
+filter mag code 117 shortname 75 color 
+filter mag code 118 shortname 76 color 
+filter mag code 119 shortname 77 color 
+filter mag code 120 shortname 78 color 
+filter mag code 121 shortname 79 color 
+filter mag code 122 shortname 7a color 
+filter mag code 123 shortname 7b color 
+filter mag code 124 shortname 7c color 
+filter mag code 125 shortname 7d color 
+filter mag code 126 shortname 7e color 
+filter mag code 127 shortname 7f color 
+filter mag code 128 shortname 80 color 
+filter mag code 129 shortname 81 color 
+filter mag code 130 shortname 82 color 
+filter mag code 131 shortname 83 color 
+filter mag code 132 shortname 84 color 
+filter mag code 133 shortname 85 color 
+filter mag code 134 shortname 86 color 
+filter mag code 135 shortname 87 color 
+filter mag code 136 shortname 88 color 
+filter mag code 137 shortname 89 color 
+filter mag code 138 shortname 8a color 
+filter mag code 139 shortname 8b color 
+filter mag code 140 shortname 8c color 
+filter mag code 141 shortname 8d color 
+filter mag code 142 shortname 8e color 
+filter mag code 143 shortname 8f color 
+filter mag code 144 shortname 90 color 
+filter mag code 145 shortname 91 color 
+filter mag code 146 shortname 92 color 
+filter mag code 147 shortname 93 color 
+filter mag code 148 shortname 94 color 
+filter mag code 149 shortname 95 color 
+filter mag code 150 shortname 96 color 
+filter mag code 151 shortname 97 color 
+filter mag code 152 shortname 98 color 
+filter mag code 153 shortname 99 color 
+filter mag code 154 shortname 9a color 
+filter mag code 155 shortname 9b color 
+filter mag code 156 shortname 9c color 
+filter mag code 157 shortname 9d color 
+filter mag code 158 shortname 9e color 
+filter mag code 159 shortname 9f color 
+filter mag code 160 shortname a0 color 
+filter mag code 161 shortname a1 color 
+filter mag code 162 shortname a2 color 
+filter mag code 163 shortname a3 color 
+filter mag code 164 shortname a4 color 
+filter mag code 165 shortname a5 color 
+filter mag code 166 shortname a6 color 
+filter mag code 167 shortname a7 color 
+filter mag code 168 shortname a8 color 
+filter mag code 169 shortname a9 color 
+filter mag code 170 shortname aa color 
+filter mag code 171 shortname ab color 
+filter mag code 172 shortname ac color 
+filter mag code 173 shortname ad color 
+filter mag code 174 shortname ae color 
+filter mag code 175 shortname af color 
+filter mag code 176 shortname b0 color 
+filter mag code 177 shortname b1 color 
+filter mag code 178 shortname b2 color 
+filter mag code 179 shortname b3 color 
+filter mag code 180 shortname b4 color 
+filter mag code 181 shortname b5 color 
+filter mag code 182 shortname b6 color 
+filter mag code 183 shortname b7 color 
+filter mag code 184 shortname b8 color 
+filter mag code 185 shortname b9 color 
+filter mag code 186 shortname ba color 
+filter mag code 187 shortname bb color 
+filter mag code 188 shortname bc color 
+filter mag code 189 shortname bd color 
+filter mag code 190 shortname be color 
+filter mag code 191 shortname bf color 
+filter mag code 192 shortname c0 color 
+filter mag code 193 shortname c1 color 
+filter mag code 194 shortname c2 color 
+filter mag code 195 shortname c3 color 
+filter mag code 196 shortname c4 color 
+filter mag code 197 shortname c5 color 
+filter mag code 198 shortname c6 color 
+filter mag code 199 shortname c7 color 
+filter mag code 200 shortname c8 color 
+filter mag code 201 shortname c9 color 
+filter mag code 202 shortname ca color 
+filter mag code 203 shortname cb color 
+filter mag code 204 shortname cc color 
+filter mag code 205 shortname cd color 
+filter mag code 206 shortname ce color 
+filter mag code 207 shortname cf color 
+filter mag code 208 shortname d0 color 
+filter mag code 209 shortname d1 color 
+filter mag code 210 shortname d2 color 
+filter mag code 211 shortname d3 color 
+filter mag code 212 shortname d4 color 
+filter mag code 213 shortname d5 color 
+filter mag code 214 shortname d6 color 
+filter mag code 215 shortname d7 color 
+filter mag code 216 shortname d8 color 
+filter mag code 217 shortname d9 color 
+filter mag code 218 shortname da color 
+filter mag code 219 shortname db color 
+filter mag code 220 shortname dc color 
+filter mag code 221 shortname dd color 
+filter mag code 222 shortname de color 
+filter mag code 223 shortname df color 
+filter mag code 224 shortname e0 color 
+filter mag code 225 shortname e1 color 
+filter mag code 226 shortname e2 color 
+filter mag code 227 shortname e3 color 
+filter mag code 228 shortname e4 color 
+filter mag code 229 shortname e5 color 
+filter mag code 230 shortname e6 color 
+filter mag code 231 shortname e7 color 
+filter mag code 232 shortname e8 color 
+filter mag code 233 shortname e9 color 
+filter mag code 234 shortname ea color 
+filter mag code 235 shortname eb color 
+filter mag code 236 shortname ec color 
+filter mag code 237 shortname ed color 
+filter mag code 238 shortname ee color 
+filter mag code 239 shortname ef color 
+filter mag code 240 shortname f0 color 
+filter mag code 241 shortname f1 color 
+filter mag code 242 shortname f2 color 
+filter mag code 243 shortname f3 color 
+filter mag code 244 shortname f4 color 
+filter mag code 245 shortname f5 color 
+filter mag code 246 shortname f6 color 
+filter mag code 247 shortname f7 color 
+filter mag code 248 shortname f8 color 
+filter mag code 249 shortname f9 color 
+filter mag code 250 shortname fa color 
+filter mag code 251 shortname fb color 
+filter mag code 252 shortname fc color 
+filter mag code 253 shortname fd color 
+filter mag code 254 shortname fe color 
+filter mag code 255 shortname ff color 
+got junk OK: Connected to galilserver. Client 1
+doing radiobutton 1
+doing radiobutton 2
+doing radiobutton 3
+doing radiobutton 4
+doing radiobutton 5
+doing radiobutton 6
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+try 1
+length of rbuf 5
+rbuf: OK: 1
+OK from send
+I am client  1
+try 1
+length of rbuf 14
+rbuf: OK:  200.0000
+OK from send
+A init 200.0
+try 1
+length of rbuf 14
+rbuf: OK:  200.0000
+OK from send
+B init 200.0
+try 1
+length of rbuf 14
+rbuf: OK:  200.0000
+OK from send
+C init 200.0
+about to do first update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+need 0 more bytes
+got all 272 bytes
+gl 268
+got status
+moves: a 00000010 0
+moves: b 00000010 0
+moves: c 00000010 0
+moves: e 00000010 0
+moves: f 00110000 0
+moves: g 00000010 0
+moves: h 00000010 0
+try 1
+length of rbuf 12
+rbuf: OK:  3.0000
+OK from send
+jam stat 3
+try 1
+length of rbuf 13
+rbuf: OK:  39.0000
+OK from send
+d:   39.0000
+writing state selectedfilter:BC
+writing state initialized:yes
+writing state filterlist:09-Open-Bob-sagev-R-07
+writing state loaded?:no
+writing state loadedfilter:none
+writing state filtersread:yes
+writing state loadedfiler:jammed
+try 1
+length of rbuf 13
+rbuf: OK:  45.0000
+OK from send
+s is 45
+checking if OK to enable 'load button
+sw 01010011
+try 1
+length of rbuf 12
+rbuf: OK:  0.0000
+OK from send
+doing show filtisin
+rr rr[0] rr[1] ["OK", "  0.0000\r"] OK   0.0000
+got a 0 here   0.0000
+done update
+
+
