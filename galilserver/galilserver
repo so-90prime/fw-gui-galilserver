@@ -233,6 +233,7 @@ class High2lowcmd
 		@myclientnum = mycn
 		@hlca = Array.new
 		@hlca = hlc.split(' ')
+		puts "High level command: #{hlc}"
 		k = @hlca[0]
 		hl = @hlca.length
 		(1...hl).each do |i|
