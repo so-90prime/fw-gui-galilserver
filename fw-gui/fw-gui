@@ -90,7 +90,8 @@ class Galil
 		try = 1
 		good = false
 		while !good
-			puts "Attempt #{try}: Sending: #{s}"
+			puts "Attempt: #{try}" 
+			puts "Sending: #{s}"
 			@cs.send(s, 0)
 			rbuf = String.new
 			rbuf = @cs.recv(300)
@@ -121,6 +122,7 @@ class Galil
 	end
 
 	def sendreadn(s, n)
+		puts "SENDING: #{s}"
 		@cs.send(s, 0)
 		cnt = 0
 		buf = String.new
@@ -134,6 +136,7 @@ class Galil
 			puts "Waiting for #{rn} more bytes."
 		end
 		puts "All #{n} bytes received."
+		puts "RECEIVED: #{buf}"
 		return buf[4,buf.length]
 	end
 		
@@ -982,7 +985,7 @@ end
 
 def update
 	if($first == 1)
-		puts "about to do first update"
+		puts "Doing first update."
 		$first = 0;
 	end
 #	$warnstr = "none"
@@ -1053,7 +1056,7 @@ end
 def getgalilstatus
 	$gstat = $gc.sendreadn("STATUS", 272)
 	gl = $gstat.length
-	puts "gl #{gl}"
+	puts "galilstatus length: #{gl}"
 end
 
  def getlimitswitches

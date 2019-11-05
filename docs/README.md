@@ -6,7 +6,7 @@
 ```
 STATUS
     Description : 
-    Arguments   : 
+    Arguments   : N/A
     Returns     : 
     Maps To     : getgalilstatus
 
@@ -20,220 +20,264 @@ RUN
     Description : 
     Arguments   : 
     Returns     : 
+    Maps To     : ex
 
 SHOW
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : read
 
 GETCLIENTNUM
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : getclientnum
 
 SET
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : set
 
 FOCUS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setactvals | focind
 
 FOCIND
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : focind
 
 ALLFOCUS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setallactvals | focall
 
 FOCALL
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : focall
 
 SHOWACTVALS
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : showactvals
 
 SETACTVALS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setactvals
 
 SETALLACTVALS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setallactvals
 
 SHOWALLLVDTVALS
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : showalllvdtvals
 
 INITGCAM
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : initgcam
 
 GFOCUS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setgfocus | focusgcam
 
 GFWMOV
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : gfwmov
 
 SETGFILTNUM
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setgfiltnum
 
 SETGFILTER
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setgflitnum | gfwmov
 
 GETGFILTER
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : getgfilter
 
 SHOWNP
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : shownp
 
 ZEROPOS
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : zeropos
 
 SENDRAW
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : sendraw
 
 GAV
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : getaxisvelocity
 
 FWMOVING
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : fwmoving
 
 LFWMOVING
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : lfwmoving
 
 FILTISIN
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : filtisin
 
 FILTIN
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : filtin
 
 FILTOUT
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : filtout
 
 FILTMOV
     Description : 
-    Arguments   : 
+    Arguments   : N/A
     Returns     : 
+    Maps To     : filtmov
 
 GETREQFILT
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : getreqfilt
 
 SETREQFILT
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : setreqfilt
 
 SLOADFILT
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : sloadfilt
 
 SUNLOADFILT
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : sunloadfilt
 
 GETFPOS
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : getfpos
 
 FILTRD
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : filtrd
 
 INITFW
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : initfw
 
 POPULATE
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : populate
 
 POPDONE
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : popdone
 
 SHOWFILTERS
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : showfilters
 
 SHOWFILTERSANDCODES
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : showfiltersandcodes
 
 SHOWLOADEDFILTER
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : showloadedfilter
 
 LOADFILTER
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : loadfilter
 
 GETLIMITS
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : gettranslimits
 
 GETAXISIFO
     Description : 
     Arguments   : 
-    Returns     : 
+    Returns     :  
+    Maps To     : getaxisinfo
 
 CLIENTDONE
     Description : 
-    Arguments   : 
-    Returns     : 
+    Arguments   : N/A
+    Returns     :  
+    Maps To     : clientdone
 
 ```
