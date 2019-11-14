@@ -1,0 +1,47 @@
+2019-01-20 12:33:04.313 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:04:33.429 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:08:41.377 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:10:57.351 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:11:03.927 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:11:08.792 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:11:13.890 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:11:27.989 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:12:24.631 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:12:24.671 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:12:24.671 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:12:40.362 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:12:40.432 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:12:40.432 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:12:54.493 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:13:00.241 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:13:00.281 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:13:00.281 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:15:37.002 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:15:41.363 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:15:41.403 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:15:41.403 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:16:17.920 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:16:17.960 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:16:17.960 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:17:40.787 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:17:40.857 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:17:40.857 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:17:56.780 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:17:57.914 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:17:57.914 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:18:01.048 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:18:02.290 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:18:02.290 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:18:05.374 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:18:05.815 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:18:05.815 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:19:27.089 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:19:27.549 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:19:27.549 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:20:35.017 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:21:11.800 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:25:14.517 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:25:23.113 | INFO     | azcam.commands:start_logger:547 - Logger started
+2019-01-20 13:25:23.563 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:25:23.563 | WARNING  | azcam.exceptions:AzCamWarning:37 - parfile is not defined
+2019-01-20 13:26:15.086 | INFO     | azcam.commands:start_logger:547 - Logger started
