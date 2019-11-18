@@ -146,7 +146,7 @@ class Galil
 			$log.debug("Waiting for #{rn} more bytes.")
 		end
 		$log.debug("All #{n} bytes received.")
-		$log.info("Received: #{buf}")
+		$log.info("Received: #{buf[4,buf.length]}")
 		return buf[4,buf.length]
 	end
 		
