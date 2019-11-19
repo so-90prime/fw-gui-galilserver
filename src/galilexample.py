@@ -46,12 +46,11 @@ class GalilTools(cmd.Cmd):
         message = self.sock.recv(size).decode()
         print(message)
 
-    def do_bye(self, arg):
+    def do_exit(self, arg):
         'Closes socket, stops GalilTools, and exits.'
         print('Closing socket.')
         self.sock.close()
         print('Exiting GalilTools. Goodbye.')
-        bye()
         return True
 
 
