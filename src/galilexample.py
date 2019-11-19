@@ -19,7 +19,7 @@ class GalilTools(cmd.Cmd):
         'Connect to galilserver'
         try:
             self.sock.connect((self.host, self.port))
-            self.do_receive()
+            self.receive()
         except Exception as err:
             print('Error: {}'.format(err))
 
@@ -35,6 +35,11 @@ class GalilTools(cmd.Cmd):
     def do_show_all_lvdt_values(self, line):
         'Return all LVDT values'
         print('test')
+
+    def receive(self, size=1024):
+        'Receive response from galilserver'
+        message = self.sock.recv(size).decode()
+        print(message)
 
 
 def test():
