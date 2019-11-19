@@ -946,7 +946,7 @@ end
 		ta[0] = mycn
 		 gst = getgalilstatus(ta)
 		gst1 = gst[4, gst.length]
-       	         v = $adbytes["a"]
+       	         v = $adbytes["a"] #98 bytes
        	         adb = gst1[v, 2]
        	         adba = adb.unpack("s")
        	         adbv = adba[0] * $adconv
