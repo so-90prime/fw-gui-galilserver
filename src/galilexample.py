@@ -8,7 +8,9 @@ PORT = 9874
 
 
 class GalilTools(cmd.Cmd):
-    """Engineering Tools to Debug Galil Issues"""
+    intro = 'Welcome to GalilTools. Type help or ? to list commands.\n'
+    prompt = '(galiltools) '
+
     def preloop(self):
         self.host = HOST
         self.port = PORT
@@ -23,20 +25,20 @@ class GalilTools(cmd.Cmd):
         except Exception as err:
             print('Error! {}'.format(err))
 
-    def do_receive(self, line):
-        'Receive response from galilserver'
-        message = self.sock.recv(size).decode()
-        print(message)
-
-    def do_unpack(self, size=1024, data_type='h'):
-        'Unpack binary data stream'
-        message = self.sock.recv(size)
-
     def do_show_all_lvdt_values(self, line):
         'Return all LVDT values'
         try:
-            sock.send('SHOWALLLVDTVALS\r\n'.encode())
+            self.sock.send('SHOWALLLVDTVALS\r\n'.encode())
             self.receive()
+        except Exception as err:
+            print('Error! {}'.format(err))
+
+    def do_disconnect(self, line):
+        'Disconnects and closes open socket with galilserver'
+        try:
+            self.sock.send('CLIENTDONE\r\n'.encode())
+            self.receive()
+            self.sock.close()
         except Exception as err:
             print('Error! {}'.format(err))
 
