@@ -38,7 +38,6 @@ class GalilTools(cmd.Cmd):
         try:
             self.sock.send('CLIENTDONE\r\n'.encode())
             self.receive()
-            self.sock.close()
         except Exception as err:
             print('Error! {}'.format(err))
 
@@ -46,6 +45,14 @@ class GalilTools(cmd.Cmd):
         'Receive response from galilserver'
         message = self.sock.recv(size).decode()
         print(message)
+
+    def do_bye(self, arg):
+        'Closes socket, stops GalilTools, and exits.'
+        print('Closing socket.')
+        self.sock.close()
+        print('Exiting GalilTools. Goodbye.')
+        bye()
+        return True
 
 
 def test():
