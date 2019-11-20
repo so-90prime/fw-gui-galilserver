@@ -6,7 +6,6 @@ import cmd
 HOST = '10.30.1.2'
 PORT = 9874
 
-
 class GalilTools(cmd.Cmd):
     intro = 'Welcome to GalilTools. Type help or ? to list commands.\n'
     prompt = '(galiltools) '
@@ -17,7 +16,7 @@ class GalilTools(cmd.Cmd):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(5)
 
-    def do_connect(self, line):
+    def do_connect(self, arg):
         'Connect to galilserver'
         try:
             self.sock.connect((self.host, self.port))
@@ -25,7 +24,7 @@ class GalilTools(cmd.Cmd):
         except Exception as err:
             print('Error! {}'.format(err))
 
-    def do_show_all_lvdt_values(self, line):
+    def do_show_all_lvdt_values(self, arg):
         'Return all LVDT values'
         try:
             self.sock.send('SHOWALLLVDTVALS\r\n'.encode())
@@ -33,7 +32,7 @@ class GalilTools(cmd.Cmd):
         except Exception as err:
             print('Error! {}'.format(err))
 
-    def do_disconnect(self, line):
+    def do_disconnect(self, arg):
         'Disconnects and closes open socket with galilserver'
         try:
             self.sock.send('CLIENTDONE\r\n'.encode())
