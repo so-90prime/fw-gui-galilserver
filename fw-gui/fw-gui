@@ -1,19 +1,46 @@
 #!/usr/bin/ruby
-$nocheck = false
-$first = 1
 
+# Requirements
 require 'logger'
-$log = Logger.new('log.txt', 'daily')
-$log.level = Logger::DEBUG
-
 require 'gtk2'
 require 'socket'
+
 #signal handler for ^C
 trap("SIGINT") do
 	$gc.send("CLIENTDONE")
 	sleep 1
 	exit(0)
-end                                                                                    
+end     
+
+
+# Global variables
+$nocheck = false
+$first = 1
+
+class MultiLogger
+	# Logging class to handle logging to two outputs
+	def initialize(*targets)
+		@targets = targets
+	end
+
+	%w(log debug info warn error fatal unknown).each do |m|
+		define_method(m) do |*args|
+			@targets.map { |t| t.send(m, *args) }
+    	end
+  	end
+end
+
+# Log to the console and to a file that changes daily
+stdout_log = Logger.new(STDOUT)
+file_log = Logger.new(File.open('log.txt', 'daily'))
+
+# levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
+stdout_log.level = Logger::INFO
+file_log.level = Logger::DEBUG
+$log = MultiLogger.new(stdout_log, file_log)
+
+
+                                                                               
 #GUI State information
 #
 #state variables stored as "parameter:value", one set per line
