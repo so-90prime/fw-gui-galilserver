@@ -1267,7 +1267,7 @@ def getsel
 	$log.debug("Start function: getsel")
 	r = $gc.send("SHOW REQFILT")
 	if /OK:/.match(r) == nil
-		puts "Error getting reqfilt"
+		$log.info("Error getting reqfilt")
 	else
 		d = r.split(/:/, 2)
 		s = d[1].chomp.to_i
