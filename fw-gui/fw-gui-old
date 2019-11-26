@@ -1,99 +1,150 @@
 #!/usr/bin/ruby
-$nocheck = false
-$first = 1
+
+# Requirements
+require 'logger'
 require 'gtk2'
 require 'socket'
+
 #signal handler for ^C
 trap("SIGINT") do
 	$gc.send("CLIENTDONE")
 	sleep 1
 	exit(0)
-end                                                                                    
+end     
+
+
+# Global variables
+$nocheck = false
+$first = 1
+
+class MultiLogger
+	# Logging class to handle logging to two outputs
+	def initialize(*targets)
+		@targets = targets
+	end
+
+	%w(log debug info warn error fatal unknown).each do |m|
+		define_method(m) do |*args|
+			@targets.map { |t| t.send(m, *args) }
+    	end
+  	end
+end
+
+# Log to the console and to a file that changes daily
+stdout_log = Logger.new(STDOUT)
+file_log = Logger.new(File.open('log.txt', 'daily'))
+
+# levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
+stdout_log.level = Logger::INFO
+file_log.level = Logger::DEBUG
+$log = MultiLogger.new(stdout_log, file_log)
+
+
+                                                                               
 #GUI State information
 #
 #state variables stored as "parameter:value", one set per line
 #i.e. "fwinitialized:yes" or "loadedfiler:r"
 #
 $fwguistatefile = "/home/primefocus/fwgui.state"
+=begin 
+example content of fwgui.state
+	selectedfilter:none
+	initialized:yes
+	filterlist:g-u-z-i-r-bokr
+	loaded?:no
+	loadedfilter:none
+	filtersread:yes
+	loadedfiler:jammed
+=end
 $fwguistatehash = Hash.new
 
 def readfwguistatefile
-	if $state = File.open($fwguistatefile, "r")
-       		 puts "Cannot open gui statefile for reading. No state known"
+	$log.info("Reading #{$fwguistatefile}")
+	#BUG added ! because this should be the inverse
+	# reads file from location /home/primefocus/fwgui.state
+	if !$state = File.open($fwguistatefile, "r")
+		$log.warning("Cannot open #{$fwguistatefile}. No initial state known")
 	end
+	# doesn't handle crashing if file does not exist
 	$state.each_line do |l|
-		puts "l #{l}"
+		$log.debug("Reading line: #{l}")
 		la = l.split(":")
 		$fwguistatehash[la[0]] = la[1]
-		puts "read GUI state #{la[0]} #{la[1]}"
+		$log.debug("Setting state #{la[0]} #{la[1]}")
 	end
 	$state.close
 end
 
 def writefwguistatefile
-        if !$state = File.open($fwguistatefile, "w")
-                puts "Cannot open fwgui state file for writing. No state saved."
-                return(1)
-        end
-        $fwguistatehash.each_key do |k|
-                $state.puts "#{k}:#{$fwguistatehash[k]}"
-		puts "writing state #{k}:#{$fwguistatehash[k]}"
-        end
+	$log.debug("Writing #{$fwguistatefile}")
+	if !$state = File.open($fwguistatefile, "w")
+		$log.warning("Cannot open #{$fwguistatefile}")
+		return(1)
+	end
+	$fwguistatehash.each_key do |k|
+		$state.puts "#{k}:#{$fwguistatehash[k]}"
+		$log.debug("Writing state #{k}:#{$fwguistatehash[k]}")
+	end
 	$state.close
 end
 
 
 class Filter
-                attr_reader :filtmagcode, :filtshortname, :filtcolor
-        def initialize(filtstr)
-                fsa = filtstr.split(' ')
-                @filtmagcode = fsa[0].to_i
-                @filtshortname = fsa[1]
-                @filtcolor  = fsa[3]
-                @filtercolor = Hash.new
-        end
+	# attr_reader method makes variables public
+    attr_reader :filtmagcode, :filtshortname, :filtcolor
+	def initialize(filtstr)
+		$log.debug("Initializing filter: #{filtstr}")
+		fsa = filtstr.split(' ')
+		@filtmagcode = fsa[0].to_i
+		@filtshortname = fsa[1]
+		@filtcolor  = fsa[3]
+		@filtercolor = Hash.new
+	end
 end
 
 class Galil
 	def initialize(telescope, instrument, serveraddress, serverport)
 		#@cs =  TCPSocket.new(serveraddress, serverport)
+		$log.info("Opening galil socket at localhost, port #{serverport}")
 		@cs =  TCPSocket.new("localhost", serverport)
 		rescue SystemCallError =>sce
-                e = "#{sce}"
-                if /e/.match("Connection refused") != nil
-                        $stderr.print "Connection refused. Will sleep 30 seconds and retry connecting\n";
-                        sleep 30
-                        retry
-                end
-                        $stderr.print "System Call Error: " + $!
-                raise
-		puts "Connected to galilserver"
+			e = "#{sce}"
+			if /e/.match("Connection refused") != nil
+				$log.warning("Connection refused to galilserver. Sleeping 30 seconds and retrying.")
+				sleep 30
+				retry
+			end
+				$log.error("System Call Error: " + $!)
+			raise
+		$log.info("Connected to galilserver.")
 		initcon = @cs.recv(100)
-		puts "initcon: #{initcon}"
+		$log.info("Response: #{initcon}")
 	end
 
 	def send(s)
 		try = 1
 		good = false
 		while !good
-			puts "try #{try}"
+			$log.info("Attempt: #{try}")
+			$log.info("Sending: #{s}")
 			@cs.send(s, 0)
 			rbuf = String.new
 			rbuf = @cs.recv(300)
-			puts "length of rbuf #{rbuf.length}"
-			puts "rbuf: #{rbuf}"
+			$log.info("Response: #{rbuf}")
+			$log.debug("Length of response: #{rbuf.length}")
 			if /\?/.match(rbuf) != nil
-				puts "Error: #{$error}"
+				$log.error($error)
 				try = try + 1
 			elsif /OK:/.match(rbuf)
-				puts "OK from send"
+				$log.debug("Send was OK.")
 				good = true
 			else
-				puts "Bad receive from send"
+				$log.debug("Send was bad. Trying again.")
 				try = try + 1
 			end
 			if try > 20
-				puts "Too many retries Bailing"
+				$log.warning("Too many retries. Stopping.")
 				rbuf = "?"
 				break
 			end
@@ -104,10 +155,11 @@ class Galil
 	def nullrecv
 		junk = String.new
 		junk = @cs.recv(100)
-		puts "got junk #{junk}"
+		$log.debug("Null received: #{junk}")
 	end
 
 	def sendreadn(s, n)
+		$log.info("Sending: #{s}")
 		@cs.send(s, 0)
 		cnt = 0
 		buf = String.new
@@ -118,30 +170,31 @@ class Galil
 			rl = rbuf.length
 			buf = buf + rbuf
 			rn = rn - rl
-			puts "need #{rn} more bytes"
+			$log.debug("Waiting for #{rn} more bytes.")
 		end
-		puts "got all #{n} bytes"
+		$log.debug("All #{n} bytes received.")
+		$log.info("Received: #{buf[4,buf.length]}")
 		return buf[4,buf.length]
 	end
 		
 end
 
 class StatusBox < Gtk::Frame
-        def initialize(text, value)
-                sb = Gtk::VBox.new
-                @slabel = Gtk::Label.new(text)
-                @svalue = Gtk::Label.new(value)
-                sb.pack_start(@svalue)
-                sb.pack_start(@slabel)
-                super()
-                set_shadow_type(Gtk::SHADOW_IN)
-                add sb
-        end
-                                                                                
-        def update(new_text, new_label,  color)
-             @svalue.set_markup("<span background='#{color}' size='larger'>#{new_text}</span>")
-             @slabel.set_markup("<span background='#{color}' size='larger'>#{new_label}</span>")
-        end
+	def initialize(text, value)
+		sb = Gtk::VBox.new
+		@slabel = Gtk::Label.new(text)
+		@svalue = Gtk::Label.new(value)
+		sb.pack_start(@svalue)
+		sb.pack_start(@slabel)
+		super()
+		set_shadow_type(Gtk::SHADOW_IN)
+		add sb
+	end
+																			
+	def update(new_text, new_label,  color)
+		@svalue.set_markup("<span background='#{color}' size='larger'>#{new_text}</span>")
+		@slabel.set_markup("<span background='#{color}' size='larger'>#{new_label}</span>")
+	end
 end
 #
 $radiobutton = Array.new
@@ -159,23 +212,26 @@ def makefilterbuttons
 #no callbacks yet as we don't know filters
 	(1..6).each do |i|
 		filtername = "unknown"
-       		 if i == 1 then
-       		         $radiobutton[i - 1] = Gtk::RadioButton.new("#{filtername} Filter")
-       		 else
-       		         $radiobutton[i - 1] = Gtk::RadioButton.new($radiobutton[0], "#{filtername} Filter")
-       		 end
-       		 tooltips = Gtk::Tooltips.new
-       		 tooltips.set_tip($radiobutton[i - 1], "Click to select #{filtername} Filter", nil)
-       		 puts "doing radiobutton #{i}"
+		if i == 1 then
+			$radiobutton[i - 1] = Gtk::RadioButton.new("#{filtername} Filter")
+		else
+			$radiobutton[i - 1] = Gtk::RadioButton.new($radiobutton[0], "#{filtername} Filter")
+		end
+		tooltips = Gtk::Tooltips.new
+		tooltips.set_tip($radiobutton[i - 1], "Click to select #{filtername} Filter", nil)
+		#puts "doing radiobutton #{i}"
 		$vb.pack_start($radiobutton[i - 1], true, true, 0)
 	end
 end
 #
 def setfilterbuttons
-#callbacks and tooltips for filter select buttons
+	$log.debug('Function: setfilterbuttons')
+	#callbacks and tooltips for filter select buttons
 	$fwguistatehash["selectedfilter"] = "none"
 	r = $gc.send("SHOWFILTERS")
 	if /OK:/.match(r) == nil
+		#TODO what does the 10 mean?
+		$log.error("Cannot get filter names.")
 		setnotify(10, "Error getting filternames")
 	else
 		d = r.split(":")
@@ -186,10 +242,11 @@ def setfilterbuttons
        		        tooltips = Gtk::Tooltips.new
        			 tooltips.set_tip($radiobutton[i - 1], "Click to select #{filtername} Filter", nil)
 			$radiobutton[i - 1].signal_connect("clicked") do
-				puts "setting reqfilt to magcode for #{filtername}"
+				$log.info("Requested filter: #{filtername}")
 				fmc = $filterhash[filtername]
 				$gc.send("SETREQFILT #{fmc};")
 				if /OK:/.match(r) == nil
+					$log.error("Cannot set requested filter.")
 					setnotify(10, "Error setting reqfilt")
 				else
 					$fwguistatehash["selectedfilter"] = filtername
@@ -202,6 +259,7 @@ def setfilterbuttons
 end
 
 def ogs
+	$log.debug('Function: ogs')
 #open socket to galilserver
 	#$gc = Galil.new("bokap3", "primefocus", "10.30.1.2", 9874)
 	$gc = Galil.new("bart", "primefocus", "10.30.1.2", 9874)
@@ -211,6 +269,7 @@ def ogs
 end
 #
 def cgs
+	$log.debug('Function: cgs')
 	$gc.send("CLIENTDONE")
 end
 
@@ -225,7 +284,6 @@ $clvdt = 0
 $stepsperlvdtu = -1.0 / 0.00055 
 #byte positions in status word
 #for each limit switch
-                                                                                
 $limswbytes = Hash.new
 $limswbytes["a"] = 46
 $limswbytes["b"] = 74
@@ -275,15 +333,16 @@ readfwguistatefile
 $filterinfo = Array.new
 $filterhash = Hash.new
 $loadpos = [-1, 3, 2, 1, 0, 5, 4]
+$log.info("Reading /home/primefocus/90prime/galil/filters.txt")
 infofile.each_line do |l|
-        next if l.match('#')
+    next if l.match('#')
 	ff = Filter.new(l.chomp)
 	fk = ff.filtmagcode
 	sn = ff.filtshortname
 	fc = ff.filtcolor
 	$filterinfo[fk] = ff
 	$filterhash[sn] = fk
-	puts "filter mag code #{fk} shortname #{sn} color #{fc}"
+	$log.debug("Filter Magnet Code: #{fk} Shortname: #{sn} Color: #{fc}")
 end
 #array for loaded filters
 #open socket to galil
@@ -380,11 +439,12 @@ $selbut.signal_connect("clicked") do
 	$fwguistatehash["selectedfilter"] = "none"
 	r = $gc.send("SHOW FILTISIN")
 	if /OK:/.match(r) == nil
-		puts "Cannot read filtisin"
+		$log.error("Cannot read if filter is in.")
 	else	
 		d = r.split(/:/, 2)
 		fin = d[1].to_i
 		if fin == 1
+			$log.warning("Cannot rotate with filter in beam!")
 			$warnstr = "Cannot rotate with filter in beam!"
 			$warncolor = "red"
 		else
@@ -411,6 +471,7 @@ $lbut.signal_connect("clicked") do
 	$popbut.set_sensitive(false)
 	$popdonebut.set_sensitive(false)
 	writefwguistatefile
+	$log.info("Filter was loaded.")
 end
 #unload button
 $ulbut = Gtk::Button.new("Unload")
@@ -425,7 +486,9 @@ $ulbut.signal_connect("clicked") do
 	$selbut.set_sensitive(true)
 	$lbut.set_sensitive(true)
 	$popbut.set_sensitive(true)
-        puts "in handler"
+	# testing this popdone add
+	$popdonebut.set_sensitive(false)
+    $log.info("Filter was removed.")
 end
 $ulbut.set_sensitive(false)
 $vb.pack_start($selbut, true, true, 0)
@@ -441,7 +504,8 @@ filtrdtooltip.set_tip($filtrdbut, "Click to read filter codes", nil)
 $filtrdbut.signal_connect("clicked") do
 	$fwguistatehash["filtersread"] = "no"
 	$fwguistatehash["filterlist"] = ""
-        puts "reading filters"
+	$log.info("Reading filters.")
+        puts "Reading filters."
 	filtrd
 	fl = ""
 	(0..5).each do |e|
@@ -463,15 +527,14 @@ itooltip = Gtk::Tooltips.new
 itooltip.set_tip($ibut, "Click to initialize filterwheel", nil)
 $ibut.signal_connect("clicked") do
 	r = $gc.send("SHOW FILTISIN")
-	puts "filtisin #{r}"
-#
-		$fwguistatehash["initialized"] = "no"
-		initfw
-		setfilterbuttons
-		$radiobutton[3].clicked
-		$savelast = 3
-		$fwguistatehash["initialized"] = "yes"
-		writefwguistatefile
+	#$log.info("filtisin #{r}")
+	$fwguistatehash["initialized"] = "no"
+	initfw
+	setfilterbuttons
+	$radiobutton[3].clicked
+	$savelast = 3
+	$fwguistatehash["initialized"] = "yes"
+	writefwguistatefile
 end
 #populate button
 $popbut = Gtk::Button.new("Populate")
@@ -480,12 +543,14 @@ poptooltip.set_tip($popbut, "Click to populate filterwheel", nil)
 $popbut.signal_connect("clicked") do
 	r = $gc.send("SHOW FILTISIN")
 	if /OK:/.match(r) == nil
-		puts "Cannot read filtisin"
+		$log.error("Cannot read if filter is in.")
+		#puts "Cannot read filtisin"
 		return
 	else	
 		d = r.split(/:/, 2)
 		fin = d[1].to_i
 		if fin == 1
+			$log.warning("Cannot populate with filter in beam.")
 			$warnstr = "Cannot populate with filter in beam!"
 			$warncolor = "red"
 			$popbut.set_sensitive(false)
@@ -501,7 +566,8 @@ end
 #disable populate button if filter in beam
 r = $gc.send("SHOW FILTISIN")
 if /OK:/.match(r) == nil
-	puts "Cannot read filtisin"
+	$log.error("Cannot read filters.")
+	#puts "Error: Cannot read filters."
 else	
 	d = r.split(/:/, 2)
 	fin = d[1].to_i
@@ -533,6 +599,7 @@ $rfbut.signal_connect("clicked") do
 end
 
 def restorefocus
+	$log.debug("Start function: restorefocus.")
 	$rfflag = true
 	adiff = $aref.to_f - $alvdt.to_f
 	bdiff = $bref.to_f - $blvdt.to_f
@@ -541,13 +608,14 @@ def restorefocus
 	bsteps = bdiff * $stepsperlvdtu
 	csteps = cdiff * $stepsperlvdtu
 	cstr =  "SETACTVALS #{asteps.to_i} #{bsteps.to_i} #{csteps.to_i}"
-	puts "will do command #{cstr}"
+	#puts "will do command #{cstr}"
 	r = $gc.send(cstr)
-	puts "galil returns #{r} from SETACTVALS command"
+	#puts "galil returns #{r} from SETACTVALS command"
 	cstr1 = "FOCIND"
 	r = $gc.send(cstr1)
-	puts "galil returns #{r} from FOCIND command"
+	#puts "galil returns #{r} from FOCIND command"
 	setas()
+	$log.debug("End function: restorefocus")
 end
 #
 #Label for setlvdt part of gui
@@ -556,15 +624,15 @@ $setlvdtl = Gtk::Label.new
 $setlvdtl.set_markup("<b>GO TO\nLVDT VALS\n/1000</b>")
 #SpinButtons for setting lvdt inputs
 #
-$alvdtsav = Gtk::SpinButton.new(-200, 2900, 2)
+$alvdtsav = Gtk::SpinButton.new(0, 1000, 2)
 $alvdtlab = Gtk::Label.new("Set A LVDT")
 #
 #
-$blvdtsav = Gtk::SpinButton.new(-200, 2900, 2)
+$blvdtsav = Gtk::SpinButton.new(0, 1000, 2)
 $blvdtlab = Gtk::Label.new("Set B LVDT")
 #
 #
-$clvdtsav = Gtk::SpinButton.new(-200, 2900, 2)
+$clvdtsav = Gtk::SpinButton.new(0, 1000, 2)
 $clvdtlab = Gtk::Label.new("Set C LVDT")
 #
 #
@@ -596,31 +664,32 @@ $lockbut = Gtk::CheckButton.new("Lock")
 #get client number
 r = $gc.send("GETCLIENTNUM")
 ra = r.split(/:/)
-puts "I am client #{ra[1]}"
+#puts "I am client #{ra[1]}"
 #get initial values set for actuator steps
 r = $gc.send("SHOW DISTA")
 if /OK/.match(r) == nil
-	puts "Error reading actuator A step setting"
+	$log.warning("Cannot read actuator A step setting.")
+	#puts "Error reading actuator A step setting"
 else
 	d = r.split(/:/, 2)
 	$afocusav.value= d[1].to_i
-	puts "A init #{$afocusav.value}"
+	$log.info("A intial: #{$afocusav.value}")
 end
 r = $gc.send("SHOW DISTB")
 if /OK/.match(r) == nil
-	puts "Error reading actuator B step setting"
+	$log.warning("Cannot read actuator B step setting.")
 else
 	d = r.split(/:/, 2)
 	$bfocusav.value= d[1].to_i
-	puts "B init #{$bfocusav.value}"
+	$log.info("B initial: #{$bfocusav.value}")
 end
 r = $gc.send("SHOW DISTC")
 if /OK/.match(r) == nil
-	puts "Error reading actuator C step setting"
+	$log.warning("Cannot read actuator C step setting.")
 else
 	d = r.split(/:/, 2)
 	$cfocusav.value= d[1].to_i
-	puts "C init #{$cfocusav.value}"
+	$log.info("C initial: #{$cfocusav.value}")
 end
 #
 #Callbacks for actuator buttons
@@ -649,68 +718,74 @@ $cfocusav.signal_connect("value-changed") do
 end
 #
 def setav
+	$log.debug("Start function: setav")
 	$aactsteps = $afocusav.value
-	puts "setav Actuator A steps set to #{$aactsteps}"
+	$log.info("Actuator A steps set to #{$aactsteps}")
 	$bactsteps = $bfocusav.value
-	puts "setav Actuator B steps set to #{$bactsteps}"
+	$log.info("Actuator B steps set to #{$bactsteps}")
 	$cactsteps = $cfocusav.value
-	puts "setav Actuator C steps set to #{$cactsteps}"
+	$log.info("Actuator C steps set to #{$cactsteps}")
 	r = $gc.send("SET DISTA #{$aactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTA"
+		$log.error("Error setting DISTA")
 	end
 	r = $gc.send("SET DISTB #{$bactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTB"
+		$log.error("Error setting DISTB")
 	end
 	r = $gc.send("SET DISTC #{$cactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTC"
+		$log.error("Error setting DISTC")
 	end
+	$log.debug("End function: setav")
 end
 
 #focus button
 fbut = Gtk::Button.new("Focus")
 fbut.signal_connect("clicked") do
+	$log.debug('Clicked: Focus button')
 	$focusflag = true
 	$aactsteps = $afocusav.value
-	puts "Foc Actuator A steps set to #{$aactsteps}"
+	$log.info("Focus Actuator A steps set to #{$aactsteps}")
 	$bactsteps = $bfocusav.value
-	puts "Foc Actuator B steps set to #{$bactsteps}"
+	$log.info("Focus Actuator B steps set to #{$bactsteps}")
 	$cactsteps = $cfocusav.value
-	puts "Foc Actuator C steps set to #{$cactsteps}"
+	$log.info("Focus Actuator C steps set to #{$cactsteps}")
 	r = $gc.send("SET DISTA #{$aactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTA"
+		$log.error("Cannot set DISTA.")
 	end
 	r = $gc.send("SET DISTB #{$bactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTB"
+		$log.error("Cannot set DISTA.")
 	end
 	r = $gc.send("SET DISTC #{$cactsteps}")
 	if /OK/.match(r) == nil
-		puts "Error setting DISTC"
+		$log.error("Cannot set DISTA.")
 	end
 	r = $gc.send("RUN FOCIND")
 	if /OK/.match(r) == nil
-		puts "Error moving focus actuators"
+		$log.error("Cannot move focus actuators.")
 	end
 end
 #
 #nominal plane button
 $npbut = Gtk::Button.new("Nominal\nPlane")
 $npbut.signal_connect("clicked") do
-		nplane
+	$log.debug('Clicked: Nominal Plane button')
+	nplane
 end
 
 def nplane
+	$log.debug("Start function: nplane")
+	$log.debug('Reading: /home/primefocus/90prime/galil/nominalplane.txt')
 	npfile = File.open("/home/primefocus/90prime/galil/nominalplane.txt", "r")
 	npdata = npfile.readlines
 	nparray = npdata[0].split(" ")
 	npa = nparray[0]
 	npb = nparray[1]
 	npc = nparray[2]
-	puts "nominal plane values: #{npa} #{npb} #{npc}"
+	$log.info("Nominal Plane values: #{npa} #{npb} #{npc}")
 	newa = npa.to_f + $blvdt.to_f
 	newc = npc.to_f + $blvdt.to_f
 	adiff = newa - $alvdt.to_f
@@ -719,15 +794,13 @@ def nplane
 	asteps = adiff * $stepsperlvdtu
 	bsteps = 0
 	csteps = cdiff * $stepsperlvdtu
-	puts "asteps #{asteps} bsteps #{bsteps} csteps #{csteps}"
+	$log.debug("asteps #{asteps} bsteps #{bsteps} csteps #{csteps}")
 	cstr =  "SETACTVALS #{asteps.to_i} #{bsteps.to_i} #{csteps.to_i}"
-        puts "will do command #{cstr}"
-        r = $gc.send(cstr)
-        puts "galil returns #{r} from SETACTVALS command"
+    r = $gc.send(cstr)
 	cstr1 = "FOCIND"
 	r = $gc.send(cstr1)
-	puts "galil returns #{r} from FOCIND command"
 	setas()
+	$log.debug("End function: nplane")
 end
 
 
@@ -740,15 +813,16 @@ $golvdtbut.signal_connect("clicked") do
 end
 
 def golvdt
+	$log.debug("Start function: golvdt")
 	al = $alvdtsav.value.to_f / 1000.0
 	bl = $blvdtsav.value.to_f / 1000.0
 	cl = $clvdtsav.value.to_f / 1000.0
 	tol = $tollvdtsav.value.to_i
-	puts "will go to lvdt values a #{al} b #{bl} c #{cl} with tolerence #{tol}"
+	$log.info("Will go to lvdt values A #{al} B #{bl} C #{cl} with tolerence #{tol}")
 	lp = 0
 	notthere = true
 	while notthere
-		puts "lp #{lp}"
+		$log.debug("Attempt: #{lp}")
 		getgalilstatus()
 		getad()
 		alvdtdiff = al - $alvdt.to_f
@@ -758,12 +832,9 @@ def golvdt
 		blvdtsteps = blvdtdiff * $stepsperlvdtu
 		clvdtsteps = clvdtdiff * $stepsperlvdtu
 		cstr =  "SETACTVALS #{alvdtsteps.to_i} #{blvdtsteps.to_i} #{clvdtsteps.to_i}"
-		puts "will do command #{cstr}"
 		r = $gc.send(cstr)
-		puts "galil returns #{r} from SETACTVALS command"
 		cstr1 = "FOCIND"
 		r = $gc.send(cstr1)
-		puts "galil returns #{r} from FOCIND command"
 		getgalilstatus()
 		lp = lp + 1
 		sleep 1.0
@@ -771,21 +842,24 @@ def golvdt
 			notthere = false
 		end
 		if (lp > 10)
-			puts "quitting after 10 iterations"
+			$log.warning("Quitting after 10 iterations")
 			return
 		end
 	end
+	$log.debug("End function: golvdt")
 end
 
 #set reference button
 $setrefbut = Gtk::Button.new("Set\nReference")
 $setrefbut.signal_connect("clicked") do
+	$log.debug('Clicked: Set Reference')
 	setref
 end
 #
 #Restore State update
 $restorestatebut = Gtk::Button.new("Restore\nState")
 $restorestatebut.signal_connect("clicked") do
+	$log.debug('Clicked: Restore State')
 	restorestate
 end
 
@@ -799,6 +873,7 @@ def toggleupdate
 end
 
 def restorestate
+	$log.debug("Start function: restorestate")
 	readfwguistatefile
 	puts "read state:"
 	$fwguistatehash.each_key do |k|
@@ -820,11 +895,12 @@ def restorestate
 		end
 		setfilterbuttons
 	end
-		
+	$log.debug("End function: restorestate")
 end
 
-$quitbut = Gtk::Button.new("QUIT GUI")
+$quitbut = Gtk::Button.new("Quit")
 $quitbut.signal_connect("clicked") do
+	$log.debug('Clicked: Quit')
 	quitgui
 end
 def quitgui
@@ -967,8 +1043,9 @@ timeout_id = Gtk.timeout_add(3000) do
 end
 
 def update
+	$log.debug("Start function: update")
 	if($first == 1)
-		puts "about to do first update"
+		$log.debug('Doing first update')
 		$first = 0;
 	end
 #	$warnstr = "none"
@@ -977,7 +1054,6 @@ def update
 		return true
 	end
 	getgalilstatus()
-        puts "got status"
 	getlimitswitches()
 	setlimitdisplay()
 	getmips()
@@ -993,13 +1069,14 @@ def update
  	#setas()
 	#setav()
 	setwarn()
-        puts "done update"
+	$log.debug("End function: update")
 	return true
+
 end
 
 def setstat
+	$log.debug("Start function: setstat")
 	if $moves["f"] == 1
-		puts "moves f"
 		$wheelmovingstat.set_pixbuf($wheelmovingstatpb)
 		$ibut.set_sensitive(false)
 		$filtrdbut.set_sensitive(false)
@@ -1009,11 +1086,8 @@ def setstat
 		$filtrdbut.set_sensitive(true)
 	end
 	r = $gc.send("SHOW FILTISIN")
-	puts "doing show filtisin"
 	rr = r.split(/:/, 2)
-	puts "rr rr[0] rr[1] #{rr} #{rr[0]} #{rr[1]}"
 	if rr[1].to_i == 0
-		puts "got a 0 here #{rr[1]}"
 		$filtinstat.set_pixbuf($nofiltinstatpb)
 		$filtoutstat.set_pixbuf($filtoutstatpb)
 		$ibut.set_sensitive(true)
@@ -1021,7 +1095,6 @@ def setstat
 		#$lbut.set_sensitive(true)
 		$ulbut.set_sensitive(false)
 	else
-		puts "got a non-zero here #{rr[1]}"
 		$filtinstat.set_pixbuf($filtinstatpb)
 		$filtoutstat.set_pixbuf($nofiltoutstatpb)
 		$ibut.set_sensitive(false)
@@ -1034,12 +1107,14 @@ def setstat
 	else
 		$initstat.update("Wheel initialized?", "No", "red")
 	end
+	$log.debug("End function: setstat")
 end
 
 def getgalilstatus
+	$log.debug("Start function: getgalilstatus")
 	$gstat = $gc.sendreadn("STATUS", 272)
 	gl = $gstat.length
-	puts "gl #{gl}"
+	$log.debug("End function: getgalilstatus")
 end
 
  def getlimitswitches
@@ -1097,13 +1172,14 @@ end
 
 
 def getmips
+	$log.debug('Start function: getmips')
 	$mipbytes.each do |k, v|
 		mb = $gstat[v, 1]
 		mba = mb.unpack("b8")
 		mbb = mb.unpack("C")
 		mbbb = ((mbb[0] & $mip) != 0)?1:0
 		$moves[k] = mbbb
-		puts "moves: #{k} #{mba[0]} #{mbbb}"
+		$log.debug("Moves: #{k} #{mba[0]} #{mbbb}")
 	end
 end
 
@@ -1134,6 +1210,7 @@ def getref
 end
 
 def getjam
+	$log.debug("Start function: getjam")
 	okcolor = "#00ff00"
 	ftsc = -1
 	$fwguistatehash["loadedfilter"] = "none"
@@ -1183,12 +1260,14 @@ def getjam
 		$fwguistatehash["loadedfilter"] = "unknown"
 	end
 	writefwguistatefile
+	$log.debug("End function: getjam")
 end
 
 def getsel
+	$log.debug("Start function: getsel")
 	r = $gc.send("SHOW REQFILT")
 	if /OK:/.match(r) == nil
-		puts "Error getting reqfilt"
+		$log.info("Error getting reqfilt")
 	else
 		d = r.split(/:/, 2)
 		s = d[1].chomp.to_i
@@ -1198,9 +1277,10 @@ def getsel
 			puts "s is #{s}"
 			sf = $filterinfo[s].filtshortname
 			$selstat.update("SELECTED FILTER", "#{sf}", "green")
-			$selected_filter = sf
+			$sfilt = sf
 		end
 	end
+	$log.debug("End function: getsel")
 end
 
 def getad
@@ -1246,6 +1326,7 @@ def getsw
 end
 
 def setas
+	$log.debug("Start function: setas")
 	r = $gc.send("SHOW DISTA")
 	puts "r #{r}"
 	if /OK/.match(r) == nil
@@ -1274,6 +1355,7 @@ def setas
 		$cfocusav.value= d[1].to_i
 	end
 	$rfflag = false
+	$log.debug("End function: setas")
 end
 
 def setnotify(c, m)
@@ -1328,7 +1410,7 @@ end
 
 def oktoload
 	puts "checking if OK to enable 'load button"
-	if($selected_filter == $rfilt)
+	if($sfilt == $rfilt)
 		$lbut.set_sensitive(true)
 	else
 		$lbut.set_sensitive(false)
