@@ -39,8 +39,6 @@ stdout_log.level = Logger::INFO
 file_log.level = Logger::DEBUG
 $log = MultiLogger.new(stdout_log, file_log)
 
-lvdt
-
 
                                                                                
 #GUI State information
@@ -49,7 +47,7 @@ lvdt
 #i.e. "fwinitialized:yes" or "loadedfiler:r"
 #
 $fwguistatefile = "/home/primefocus/fwgui.state"
-$actlvdtlog = "/home/primefocus/actuator-lvdt.log"
+$lvdtlog = "/home/primefocus/lvdt-position.log"
 =begin 
 example content of fwgui.state
 	selectedfilter:none
@@ -95,11 +93,18 @@ def writefwguistatefile
 end
 
 def writeActLvdtValues
-    $log.debug("Writing Actuator and LVDT values to #{$actlvdtlog}")
-    file = File.new($actlvdtlog, 'a')
+    $log.debug("Writing Actuator and LVDT values to #{$lvdtlog}")
+    file = File.new($lvdtlog, 'a')
     timestamp = Time.new.strf("%Y-%m-%d %H:%M:%S")
-    file.write("#{timestamp}\t#{$alvdt}\t#{$blvdt}\t#{$clvdt}")
+    telcom = TCPSocket.new("10.30.3.42", 5750)
+    telcom.write "BOK TCS 123 REQUEST ALL"
+    response = telcom.read(500).split
+    telcom.close
+    alt = response[8]
+    az = response[9]
+    file.write("#{timestamp}\t#{$alvdt}\t#{$blvdt}\t#{$clvdt}\t#{alt}\t#{az}")
     file.close
+
 
 class Filter
 	# attr_reader method makes variables public
