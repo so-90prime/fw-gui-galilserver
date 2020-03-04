@@ -39,6 +39,8 @@ stdout_log.level = Logger::INFO
 file_log.level = Logger::DEBUG
 $log = MultiLogger.new(stdout_log, file_log)
 
+lvdt
+
 
                                                                                
 #GUI State information
@@ -47,6 +49,7 @@ $log = MultiLogger.new(stdout_log, file_log)
 #i.e. "fwinitialized:yes" or "loadedfiler:r"
 #
 $fwguistatefile = "/home/primefocus/fwgui.state"
+$actlvdtlog = "/home/primefocus/actuator-lvdt.log"
 =begin 
 example content of fwgui.state
 	selectedfilter:none
@@ -86,9 +89,17 @@ def writefwguistatefile
 		$state.puts "#{k}:#{$fwguistatehash[k]}"
 		$log.debug("Writing state #{k}:#{$fwguistatehash[k]}")
 	end
-	$state.close
+    $state.close
+    # Call the logging function Greg requested
+    writeActLvdtValues
 end
 
+def writeActLvdtValues
+    $log.debug("Writing Actuator and LVDT values to #{$actlvdtlog}")
+    file = File.new($actlvdtlog, 'a')
+    timestamp = Time.new.strf("%Y-%m-%d %H:%M:%S")
+    file.write("#{timestamp}\t#{$alvdt}\t#{$blvdt}\t#{$clvdt}")
+    file.close
 
 class Filter
 	# attr_reader method makes variables public
