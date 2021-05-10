@@ -32,7 +32,7 @@ end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDOUT)
-file_log = Logger.new('log.txt', 'daily')
+file_log = Logger.new('fw-gui.log', 10, 5120000)
 
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
@@ -60,7 +60,7 @@ example content of fwgui.state
 $fwguistatehash = Hash.new
 
 def readfwguistatefile
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	#BUG added ! because this should be the inverse
 	# reads file from location /home/primefocus/fwgui.state
 	if !$state = File.open($fwguistatefile, "r")
@@ -72,11 +72,11 @@ def readfwguistatefile
 		$fwguistatehash[la[0]] = la[1]
 	end
 	$state.close
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def writefwguistatefile
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	if !$state = File.open($fwguistatefile, "w")
 		$log.warn("Cannot open #{$fwguistatefile}")
 		return(1)
@@ -86,14 +86,13 @@ def writefwguistatefile
 		$log.debug("Writing state #{k}:#{$fwguistatehash[k]}")
 	end
     $state.close
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 class Filter
 	# attr_reader method makes variables public
     attr_reader :filtmagcode, :filtshortname, :filtcolor
 	def initialize(filtstr)
-		$log.debug("Initializing filter: #{filtstr}")
 		fsa = filtstr.split(' ')
 		@filtmagcode = fsa[0].to_i
 		@filtshortname = fsa[1]
@@ -104,7 +103,7 @@ end
 
 class Galil
 	def initialize(telescope, instrument, serveraddress, serverport)
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		#@cs =  TCPSocket.new(serveraddress, serverport)
 		$log.info("Opening galil socket at localhost, port #{serverport}")
 		@cs =  TCPSocket.new("localhost", serverport)
@@ -119,7 +118,7 @@ class Galil
 			raise
 		$log.info("Connected to galilserver.")
 		initcon = @cs.recv(100)
-		$log.debug("Exiting #{__method__}")
+		$log.debug("Exiting function:  #{__method__}")
 
 	end
 
@@ -151,21 +150,21 @@ class Galil
 				break
 			end
 		end
-		$log.debug("Exiting #{__method__}")
+		$log.debug("Exiting function:  #{__method__}")
 		return rbuf
 	end
 
 	def nullrecv
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		junk = String.new
 		junk = @cs.recv(100)
 		$log.debug("Null received: #{junk}")
-		$log.debug("Exiting #{__method__}")
+		$log.debug("Exiting function:  #{__method__}")
 
 	end
 
 	def sendreadn(s, n)
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		$log.info("Sending: #{s}")
 		@cs.send(s, 0)
 		cnt = 0
@@ -183,13 +182,13 @@ class Galil
 		$log.info("Received: #{buf[4,buf.length]}")
 		return buf[4,buf.length]
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 		
 end
 
 class StatusBox < Gtk::Frame
 	def initialize(text, value)
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		sb = Gtk::VBox.new
 		@slabel = Gtk::Label.new(text)
 		@svalue = Gtk::Label.new(value)
@@ -201,11 +200,11 @@ class StatusBox < Gtk::Frame
 	end
 																			
 	def update(new_text, new_label,  color)
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		@svalue.set_markup("<span background='#{color}' size='larger'>#{new_text}</span>")
 		@slabel.set_markup("<span background='#{color}' size='larger'>#{new_label}</span>")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 #
 $radiobutton = Array.new
@@ -221,7 +220,7 @@ $nmcount = 0
 def makefilterbuttons
 #loop to create filter select buttons
 #no callbacks yet as we don't know filters
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	(1..6).each do |i|
 		filtername = "unknown"
 		if i == 1 then
@@ -233,11 +232,11 @@ def makefilterbuttons
 		tooltips.set_tip($radiobutton[i - 1], "Click to select #{filtername} Filter", nil)
 		$vb.pack_start($radiobutton[i - 1], true, true, 0)
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 #
 def setfilterbuttons
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$log.debug('Function: setfilterbuttons')
 	#callbacks and tooltips for filter select buttons
 	$fwguistatehash["selectedfilter"] = "none"
@@ -270,11 +269,11 @@ def setfilterbuttons
 			writefwguistatefile
 		end
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def ogs
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$log.debug('Function: ogs')
 #open socket to galilserver
 	#$gc = Galil.new("bokap3", "primefocus", "10.30.1.2", 9874)
@@ -282,14 +281,14 @@ def ogs
 	#
 	#gobbble up connection message
 	$gc.nullrecv
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 #
 def cgs
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$log.debug('Function: cgs')
 	$gc.send("CLIENTDONE")
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 #program start
@@ -624,7 +623,7 @@ $rfbut.signal_connect("clicked") do
 end
 
 def restorefocus
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$rfflag = true
 	adiff = $aref.to_f - $alvdt.to_f
 	bdiff = $bref.to_f - $blvdt.to_f
@@ -641,7 +640,7 @@ def restorefocus
 	#puts "galil returns #{r} from FOCIND command"
 	setas()
 	$log.debug("End function: restorefocus")
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 #
 #Label for setlvdt part of gui
@@ -747,7 +746,7 @@ $cfocusav.signal_connect("value-changed") do
 end
 #
 def setav
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$aactsteps = $afocusav.value
 	$log.info("Actuator A steps set to #{$aactsteps}")
 	$bactsteps = $bfocusav.value
@@ -766,7 +765,7 @@ def setav
 	if /OK/.match(r) == nil
 		$log.error("Error setting DISTC")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 #focus button
@@ -806,7 +805,7 @@ $npbut.signal_connect("clicked") do
 end
 
 def nplane
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$log.debug('Reading: /home/primefocus/90prime/galil/nominalplane.txt')
 	npfile = File.open("/home/primefocus/90prime/galil/nominalplane.txt", "r")
 	npdata = npfile.readlines
@@ -829,7 +828,7 @@ def nplane
 	cstr1 = "FOCIND"
 	r = $gc.send(cstr1)
 	setas()
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 
@@ -843,7 +842,7 @@ $golvdtbut.signal_connect("clicked") do
 end
 
 def golvdt
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	al = $alvdtsav.value.to_f / 1000.0
 	bl = $blvdtsav.value.to_f / 1000.0
 	cl = $clvdtsav.value.to_f / 1000.0
@@ -876,7 +875,7 @@ def golvdt
 			return
 		end
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 #set reference button
@@ -894,13 +893,13 @@ $restorestatebut.signal_connect("clicked") do
 end
 
 def toggleupdate
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$noupdate = $noupdate?false:true
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def restorestate
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	readfwguistatefile
 	ky = "initialized"
 	if /yes/.match($fwguistatehash[ky])
@@ -915,7 +914,7 @@ def restorestate
 		end
 		setfilterbuttons
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 $quitbut = Gtk::Button.new("Quit")
@@ -924,19 +923,19 @@ $quitbut.signal_connect("clicked") do
 	quitgui
 end
 def quitgui
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$gc.send("CLIENTDONE")
 	sleep 1
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 	exit 0
 end
 	
 def setref
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$aref = $alvdt
 	$bref = $blvdt
 	$cref = $clvdt
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 #pack set lvdt part of gui
 $setlvdtbox.pack_start($setlvdtl, true, true, 0)
@@ -1067,7 +1066,7 @@ timeout_id = Gtk.timeout_add(3000) do
 end
 
 def update
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	if($first == 1)
 		$log.debug('Doing first update')
 		$first = 0;
@@ -1094,13 +1093,13 @@ def update
  	#setas()
 	#setav()
 	setwarn()
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 	return true
 
 end
 
 def setstat
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	if $moves["f"] == 1
 		$wheelmovingstat.set_pixbuf($wheelmovingstatpb)
 		$ibut.set_sensitive(false)
@@ -1132,18 +1131,18 @@ def setstat
 	else
 		$initstat.update("Wheel initialized?", "No", "red")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def getgalilstatus
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$gstat = $gc.sendreadn("STATUS", 272)
 	gl = $gstat.length
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
  def getlimitswitches
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$limswbytes.each do |k, v|
 		lsb = $gstat[v, 1]
 		lsba = lsb.unpack("b8")
@@ -1151,11 +1150,11 @@ end
 		$rlimits[k] = lsba0[2,1].to_i
 		$flimits[k] = lsba0[3,1].to_i
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def setlimitdisplay
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	okcolor = "#00ff00"
         if $flimits["a"] == 0
                 $lvdtalim.update("A lim", "Forward", "red")
@@ -1196,12 +1195,12 @@ def setlimitdisplay
 		$warnstr = "none"
 		$warncolor = okcolor
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 
 def getmips
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$mipbytes.each do |k, v|
 		mb = $gstat[v, 1]
 		mba = mb.unpack("b8")
@@ -1210,11 +1209,11 @@ def getmips
 		$moves[k] = mbbb
 		$log.debug("Moves: #{k} #{mba[0]} #{mbbb}")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def getenc
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		okcolor = "#00ff00"
 		v = $encbytes["a"]
 		encbb = $gstat[v, 4]
@@ -1231,20 +1230,20 @@ def getenc
 		encv = encbb.unpack("i")
 		encav = encv[0]
 		$encc.update("C encoder", encav.to_i, okcolor)
-		$log.debug("Exiting #{__method__}")
+		$log.debug("Exiting function:  #{__method__}")
 end
 
 def getref
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	okcolor = "#00ff00"
 	$lvdtaref.update("A Ref", $aref, okcolor)
 	$lvdtbref.update("B Ref", $bref, okcolor)
 	$lvdtcref.update("C Ref", $cref, okcolor)
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def getjam
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	okcolor = "#00ff00"
 	ftsc = -1
 	$fwguistatehash["loadedfilter"] = "none"
@@ -1291,11 +1290,11 @@ def getjam
 		$fwguistatehash["loadedfilter"] = "unknown"
 	end
 	writefwguistatefile
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def getsel
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("SHOW REQFILT")
 	if /OK:/.match(r) == nil
 		$log.error("Error getting reqfilt")
@@ -1310,11 +1309,11 @@ def getsel
 			$sfilt = sf
 		end
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def getad
-		$log.debug("Entering #{__method__}")
+		$log.debug("Entering function: #{__method__}")
 		okcolor = "#00ff00"
 		v = $adbytes["a"]
 		adb = $gstat[v, 2]
@@ -1349,17 +1348,17 @@ def getad
 			ccolor = okcolor
 		end
 		$lvdtc.update("C", adbv.to_s[0,5], ccolor)
-		$log.debug("Exiting #{__method__}")
+		$log.debug("Exiting function:  #{__method__}")
 end
 def getsw
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	swb = $gstat[7, 1]
 	swba = swb.unpack("b8")
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def setas
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("SHOW DISTA")
 	if /OK/.match(r) == nil
 		$log.error("Error reading actuator A step setting")
@@ -1382,33 +1381,33 @@ def setas
 		$cfocusav.value= d[1].to_i
 	end
 	$rfflag = false
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def setnotify(c, m)
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$ncount = c
 	$nmessage = m
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def notify()
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	if $ncount != 0
 		$jamstat.update("ALERT", $nmessage, "red")
 		$ncount = $ncount - 1
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def setwarn()
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	$notifystat.update("Warnings", $warnstr, $warncolor)
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def initfw
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("INITFW")	
 	if /OK:/.match(r) == nil
 		setnotify(10, "Error initializing filterwheel")
@@ -1416,11 +1415,11 @@ def initfw
 		setnotify(10, "Filterwheel initializing")
 		$initialized = true
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def filtrd
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("FILTRD")
 	 if /OK:/.match(r) == nil
                 setnotify(10, "Error Reading Filters")
@@ -1428,35 +1427,35 @@ def filtrd
                 setnotify(10, "Reading Filters")
         end
 	setfilterbuttons
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def populate
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("POPULATE")
 	if /OK:/.match(r) == nil
 		setnotify(10, "Error setting populate mode")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def popdone
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	r = $gc.send("POPDONE")
 	if /OK:/.match(r) == nil
 		setnotify(10, "Error ending populate mode")
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 def oktoload
-	$log.debug("Entering #{__method__}")
+	$log.debug("Entering function: #{__method__}")
 	if($sfilt == $rfilt)
 		$lbut.set_sensitive(true)
 	else
 		$lbut.set_sensitive(false)
 	end
-	$log.debug("Exiting #{__method__}")
+	$log.debug("Exiting function:  #{__method__}")
 end
 
 Gtk.main
