@@ -32,7 +32,7 @@ end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDOUT)
-file_log = Logger.new(File.open('log.txt', 'daily'))
+file_log = Logger.new('log.txt', 'daily')
 
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
