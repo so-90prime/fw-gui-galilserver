@@ -80,15 +80,14 @@ class Galil
 	def initialize(telescope, instrument, cmdfile, serverport, galiladdress, galilport)
 	begin
 		$log.debug("Entering function: #{__method__}")
-		$log.debug("Opening socket to galil")
-		$galilsock = TCPSocket.new("10.30.3.31", galilport)
-		$log.debug("Starting command server")
+		$log.info("Opening socket to galil")
+		$log.info("Starting command server")
 		@serversock = TCPServer.new( "", serverport)	
-		$log.debug("Command server listening")
+		$log.info("Command server listening")
 		rescue SystemCallError =>sce
 		e = "#{sce}"
 		if /e/.match("Connection refused") != nil
-			$log.warn("Connection refused. Will sleep 10 seconds and retry connecting")
+			$log.warn("Connection refused. Will sleep 10 seconds and retry connecting. The galil might need to be power cycled.")
 			sleep 10
 			retry
 		end
@@ -166,11 +165,10 @@ class Galil
 	
   def lsendgalil(cmd, mycn)
 		$log.debug("Entering function: #{__method__}")
-	  $log.debug("In lsendgalil")
     lf = File.new($lockfile)
 		#first get the lock
     while lf.flock(File::LOCK_EX | File:: LOCK_NB) == false
-      $log.debug("galil locked")
+      $log.warn("galil locked")
       sleep 0.1
     end
 		#now we have the lock
@@ -179,7 +177,7 @@ class Galil
 	  while try == true
 			tn = tn + 1
 			if tn > 20
-				$log.debug("Too many retries. Bailing out")
+				$log.error("Too many retries. Bailing out")
 				#unset the lock
         lf.flock(File::LOCK_UN)
 				$log.debug("Exiting function: #{__method__}")
@@ -221,7 +219,7 @@ class Galil
 	def runserver
 		$log.debug("Entering function: #{__method__}")
 		while true do
-			$log.debug("waiting for connections from clients")
+			$log.info("waiting for connections from clients")
 			newsock = @serversock.accept
 			if newsock == nil
 				$log.debug("galilserver accept error")
@@ -230,7 +228,7 @@ class Galil
 			
 			if (cpid = fork) == nil
 				myclientnum = $globalclientnum
-				$log.debug("got connection from client #{myclientnum}")
+				$log.info("got connection from client #{myclientnum}")
 				sleep 1
 				sendclient(myclientnum, newsock, "OK: Connected to galilserver. Client #{myclientnum}")
 				highlevelcmd = ""
@@ -261,9 +259,9 @@ class Galil
 
 	def shutdown
 		$log.debug("Entering function: #{__method__}")
-		$log.debug("Closing socket to galil")
+		$log.info("Closing socket to galil")
 		$galilsock.close
-		$log.debug("Closing listening server socket")
+		$log.info("Closing listening server socket")
 		@serversock.close
 		$log.debug("Exiting function: #{__method__}")
 	end
@@ -305,7 +303,6 @@ class High2lowcmd
 
 	def dolowlevel
 		$log.debug("Entering function: #{__method__}")
-		$log.debug("In dolowlevel: client #{@myclientnum}")
 		$error = ""
 		cnum = 1
 		rrv = ""
@@ -345,7 +342,7 @@ attr_reader :mycli
     lf = File.new($lockfile)
 		#first get the lock
     while lf.flock(File::LOCK_EX | File:: LOCK_NB) == false
-      $log.debug("galil locked")
+      $log.warn("galil locked")
       sleep 0.1
     end
 		#now we have the lock
@@ -359,7 +356,7 @@ attr_reader :mycli
         lf.flock(File::LOCK_UN)
 				return "?: Too many retries. Bailing out"
 			end
-   	  $log.debug("client #{mycn} sending to galil: #{cmd}")
+   	  $log.info("client #{mycn} sending to galil: #{cmd}")
       $log.debug("try: #{tn}")
       $galilsock.send(cmd, 0)
       retv = $galilsock.recv(272, 0)
@@ -374,11 +371,11 @@ attr_reader :mycli
       	$log.debug("in error branch")
         $galilsock.send("TC 1;", 0)
         $error = $galilsock.recv(100)
-			 	$log.debug("Errorcode: #{$error}")
+			 	$log.error("Errorcode: #{$error}")
       elsif /:/.match(retv) != nil
         last = retv.length - 2
         rv = retv.slice(0, last)
-        $log.debug("galil returns OK")
+        $log.info("galil returns OK")
 			 	try = false
 				#unset the lock
       	lf.flock(File::LOCK_UN)
@@ -396,7 +393,7 @@ attr_reader :mycli
     lf = File.new($lockfile)
 		#first get the lock
     while lf.flock(File::LOCK_EX | File:: LOCK_NB) == false
-			$log.debug("galil locked")
+			$log.warn("galil locked")
 			sleep 0.1
     end
 		#now we have the lock
@@ -411,6 +408,7 @@ attr_reader :mycli
 				return "?: Too many retries. Bailing out"
 			end
 			$log.debug("try #{tn}")
+			$log.info("sending to galil #{cmd}")
 			$galilsock.send(cmd, 0)
 			retv = String.new
 			retv = $galilsock.read(n)
@@ -418,7 +416,7 @@ attr_reader :mycli
 				$log.debug("in error branch")
 				$galilsock.send("TC 1;", 0)
 				$error = $galilsock.recv(100)
-				$log.debug("Errorcode: #{$error}")
+				$log.error("Errorcode: #{$error}")
 			elsif /:$/.match(retv) != nil
 				last = retv.length - 1
 				$log.debug("in good branch")
@@ -443,7 +441,6 @@ attr_reader :mycli
 	def getgalilstatus(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In getgalilstatus for client #{mycn}")
 		(1..10).each do |t|
                 	$gstat = sendgalilreadn("QR;", 269)
 	                gstatlength = $gstat.length
@@ -479,7 +476,6 @@ def  getaxisinfo(aa)
 	$log.debug("Entering function: #{__method__}")
 		a = aa[0]
 		mycn = aa[1]
-		$log.debug("In getaxisinfo for client #{mycn}")	
 		cstr = "QR#{a};"
 		astat = sendgalilreadn(cstr, 33)
 		s = astat[4,28]
@@ -497,7 +493,6 @@ def  getaxisinfo(aa)
 	def fwmoving(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In fwmoving for client #{mycn}")
 		r = getaxisvelocity("F")
 		if r == "OK:0"
 			$log.debug("Exiting function: #{__method__}")
@@ -511,7 +506,6 @@ def  getaxisinfo(aa)
 	def lfwmoving(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In lfwmoving for client #{mycn}")
 		cstr = "TV F;"
 		$log.debug("sending #{cstr} to galil")
 		r = sendgalil(cstr, mycn) 
@@ -527,7 +521,6 @@ def  getaxisinfo(aa)
 		ta = Array.new
 		ta[0] = "FILTISIN"
 		ta[1] = mycn
-		$log.debug("In filtisin for client #{mycn}")
 		r = read(ta)
 		$log.debug("got filtin #{r}")
 		$log.debug("Exiting function: #{__method__}")
@@ -538,7 +531,6 @@ def  getaxisinfo(aa)
 	def getclientnum(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In getclientnum for client #{mycn}")
 		$log.debug("Exiting function: #{__method__}")
 		return "OK: #{mycn}"
 	end
@@ -549,7 +541,6 @@ def  getaxisinfo(aa)
 		cln = ca[1]
 		cstr = "#{c}=?;"
 		$log.debug("sending #{cstr} to galil")
-		$log.debug("in read for client #{cln}")
 		resp = sendgalil(cstr, cln)
 		$log.debug("Exiting function: #{__method__}")
 		return(resp)
@@ -559,7 +550,6 @@ def  getaxisinfo(aa)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[2]
 		cstr = "#{ca[0]}=#{ca[1]};"
-		$log.debug("In set for client #{mycn}")
 		$log.debug("sending #{cstr} to galil")
 		resp = sendgalil(cstr, @myclientnum)
 		$log.debug("Exiting function: #{__method__}")
@@ -571,7 +561,6 @@ def  getaxisinfo(aa)
 		mycn = ca[1]
 		cstr = "#{ca[0]};"
 		$log.debug("sending #{cstr} to galil")
-		$log.debug("In sendraw for client #{mycn}")
 		resp = sendgalil(cstr, @myclientnum)
 		$log.debug("Exiting function: #{__method__}")
 		return resp
@@ -581,7 +570,6 @@ def  getaxisinfo(aa)
 		$log.debug("Entering function: #{__method__}")
 		c = ca[0]
 		mycn = ca[1]
-		$log.debug("in ex for Client #{mycn}")
 		cstr = "XQ ##{c};"
 		$log.debug("sending #{cstr} to galil")
 		resp = sendgalil(cstr, mycn)
@@ -615,7 +603,6 @@ def  getaxisinfo(aa)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
 		cstr = "XQ #FOCIND;"
-		$log.debug("In focind for Client #{mycn}")
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
 		return resp
@@ -624,7 +611,6 @@ def  getaxisinfo(aa)
 	def focall(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In focall for client #{mycn}")
 		cstr = "XQ #COORDMV;"
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
@@ -634,7 +620,6 @@ def  getaxisinfo(aa)
 	def filtin(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In filtin for Client #{mycn}")
 		cstr = "XQ #FILTIN,3;"
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
@@ -644,7 +629,6 @@ def  getaxisinfo(aa)
 	def filtout(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In filtout for Client #{mycn}")
 		cstr = "XQ #FILTOUT;"
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
@@ -654,7 +638,6 @@ def  getaxisinfo(aa)
 	def populate(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In populate for client #{mycn}")
 		cstr = "XQ #FILTLDM;"
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
@@ -664,7 +647,6 @@ def  getaxisinfo(aa)
 	def popdone(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In popdone for client #{mycn}")
 		cstr = "HX;"
 		resp = sendgalil(cstr, mycn)
 		$log.debug("Exiting function: #{__method__}")
@@ -674,7 +656,6 @@ def  getaxisinfo(aa)
 	def filtmov(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In filtmov for client #{mycn}")
 		fin = Array.new
 		fin[0] = mycn
 		r = filtisin(fin)
@@ -702,7 +683,6 @@ def  getaxisinfo(aa)
 	def sfiltmov(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In sfiltmov for client #{mycn}")
 		fin = Array.new
 		fin[0] = mycn
 		r = filtisin(fin)
@@ -730,7 +710,6 @@ def  getaxisinfo(aa)
 	def getreqfilt(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In getreqfilt for Client #{mycn}")
 		cstr = "REQFILT = ?;"
 		r = sendgalil(cstr, mycn)
 		if /OK:/.match(r) == nil
@@ -748,7 +727,6 @@ def  getaxisinfo(aa)
 		$log.debug("Entering function: #{__method__}")
 		code = codea[0]
 		mycn = codea[1]
-		$log.debug("In setreqfilt for Client #{mycn}")
 		cstr = "REQFILT=#{code};"
 		r = sendgalil(cstr, mycn)
 		if /OK:/.match(r) == nil
@@ -765,7 +743,6 @@ def  getaxisinfo(aa)
 		$log.debug("Entering function: #{__method__}")
 		fn = codea[0]
 		mycn = codea[1]
-		$log.debug("In sloadfilt for Client #{mycn}")
 		if $filthash.has_key?(fn) == false
 			$log.debug("no such filter in master list")
 			$log.debug("Exiting function: #{__method__}")
@@ -813,7 +790,6 @@ def  getaxisinfo(aa)
 	def sunloadfilt(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In sunloadfilt for client #{mycn}")
 		filtout(ca)
 		$log.debug("Exiting function: #{__method__}")
 		return "OK: 0"
@@ -823,11 +799,10 @@ def  getaxisinfo(aa)
 	def getfiltval(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In getfiltval for Client #{mycn}")
 		cstr = "FILTVAL = ?;"
 		r = sendgalil(cstr, mycn)
 		if /OK:/.match(r) == nil
-			$log.debug("Error getting filtval")
+			$log.error("Error getting filtval")
 			$log.debug("Exiting function: #{__method__}")
 			return("?: Error getting filtval")
 		else
@@ -840,7 +815,6 @@ def  getaxisinfo(aa)
 	def initfw(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In initfw for Client #{mycn}")
 		ta = Array.new
 		ta[0] = mycn
 		r = filtisin(ta)
@@ -868,7 +842,6 @@ def  getaxisinfo(aa)
 		ta = Array.new
 		ta[0] = mycn
 		r = filtisin(ta)
-		$log.debug("In filtrd for Client #{mycn}")
 		r = filtisin(ta)
 		$log.debug("filtisin #{r}")
 		if /1/.match(r) != nil
@@ -891,7 +864,6 @@ def  getaxisinfo(aa)
 	def showfilters(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In showfilters for client #{mycn}")
 		lf = Array.new
 		lf[0] = "OK:"
 		(0..5).each do |l|
@@ -918,14 +890,13 @@ def  getaxisinfo(aa)
 	def showfiltersandcodes(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In showfiltersandcodes for client #{mycn}")
 		lf = Array.new
 		lf[0] = "OK:"
 		(0..5).each do |l|
 			r = sendgalil("FILTVALS[#{l}]=?;", mycn)
 			$log.debug("r #{r}")
 			if /OK:/.match(r) == nil
-				$log.debug("Error reading filter info from galil")
+				$log.error("Error reading filter info from galil")
 			else
 				d = r.split(":")
 				$log.debug("d[1] #{d[1]}")
@@ -946,10 +917,9 @@ def  getaxisinfo(aa)
 	def showloadedfilter(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In showloadedfilter fot client #{mycn}")
 		r = sendgalil("FILTVAL = ?;", mycn)
 		if /OK:/.match(r) == nil
-			$log.debug("Error reading loaded filter from galil")
+			$log.error("Error reading loaded filter from galil")
 		else
 			d = r.split(":")
 			f = $filters[d[1].to_i]
@@ -982,7 +952,6 @@ end
 def shownp(ca)
 	$log.debug("Entering function: #{__method__}")
 	mycn = ca[0]
-	$log.debug("In shownp for Client #{mycn}")
 	npfile = "/home/primefocus/90prime/galil/nominalplane.txt"
 	if $npread == false
 		npf = File.new(npfile, "r")
@@ -1006,7 +975,6 @@ end
 	def showactvals(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In showactvals for client #{mycn}")
 		avals = Array.new
 		avals[0] = "OK: "
 		r = sendgalil("DISTA = ?;", mycn)
@@ -1045,7 +1013,6 @@ end
 		bv = c[1]
 		cv = c[2]
 		mycn = c[3]
-		$log.debug("In setactvals for client #{mycn}")
 		r = "OK:"
 		$log.debug("set a #{av} b #{bv} c #{cv}")
 		r = sendgalil("DISTA=#{av};", mycn)
@@ -1075,7 +1042,6 @@ end
 		allv[2] = c[0]
 		mycn = c[1]
 		allv[3] = mycn
-		$log.debug("In setallactvals for Client #{mycn}")
 		setactvals(allv)
 		r = sendgalil("DISTALL=#{c[0]};", mycn)
 		if /OK:/.match(r) == nil
@@ -1089,7 +1055,6 @@ end
 	def showalllvdtvals(ca)
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
-		$log.debug("In showalllvdtvals for client #{mycn}")
 		 lvdtvals = Array.new
 		 lvdtvals[0] = "OK: "
 		ta = Array.new
@@ -1121,7 +1086,6 @@ end
 		$log.debug("Entering function: #{__method__}")
 		guidersteps = c[0]
 		mycn = c[1]
-		$log.debug("In setgfocus for Client #{mycn}")
 		r = sendgalil("DISTGCAM=#{guidersteps};", @myclientnum)
 		if /OK/.match(r) == nil
 			$log.debug("Exiting function: #{__method__}")
@@ -1136,7 +1100,6 @@ end
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
 		cmd = "XQ #GFWINIT;"
-		$log.debug("In initgcam for client #{mycn}")
 		r = sendgalil(cmd, mycn)
 		$log.debug("Exiting function: #{__method__}")
 		return r
@@ -1146,7 +1109,6 @@ end
 		$log.debug("Entering function: #{__method__}")
 		mycn = ca[0]
 		cmd = "XQ #FOCGCAM;"
-		$log.debug("In focusgcam for client #{mycn}")
 		r = sendgalil(cmd, mycn)
 		$log.debug("Exiting function: #{__method__}")
 		return r
@@ -1157,7 +1119,6 @@ end
 		gfiltnum = ca[0]
 		mycn = ca[1]
 		r = sendgalil("GFILTN=#{gfiltnum};", mycn)
-		$log.debug("In setgfilternum for client #{mycn}")
 		if /OK/.match(r) == nil
 			$log.debug("Exiting function: #{__method__}")
 			return "?: Error setting guider filter number"
