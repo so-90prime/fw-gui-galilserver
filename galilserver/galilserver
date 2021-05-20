@@ -3,6 +3,13 @@ require 'socket'
 require 'logger'
 include Process
 
+puts "
+█▀▀ ▄▀█ █░░ █ █░░ █▀ █▀▀ █▀█ █░█ █▀▀ █▀█
+█▄█ █▀█ █▄▄ █ █▄▄ ▄█ ██▄ █▀▄ ▀▄▀ ██▄ █▀▄"
+
+puts "w/ logging and fixes to locks"
+puts "\nStarting, please wait..."
+sleep 2
 class MultiLogger
 	# Logging class to handle logging to two outputs
 	def initialize(*targets)
@@ -18,8 +25,8 @@ end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDOUT)
-file_log = Logger.new('galilserver.log', 10, 5120000)
-
+file_log = Logger.new('/home/primefocus/.mtnops/galilserver.log', 10, 5120000)
+puts "Log file --> /home/primefocus/.mtnops/galilserver.log"
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
 file_log.level = Logger::DEBUG
@@ -32,6 +39,13 @@ $log = MultiLogger.new(stdout_log, file_log)
 #
 $lockfile = "/tmp/galil.lock"
 $statefile = "/home/primefocus/galil.state"
+
+puts "Lock file --> #{$lockfile}"
+puts "State file --> #{$statefile}"
+puts "Commands file --> /home/primefocus/90prime/galil/cmds.list"
+puts "Filter files --> /home/primefocus/90prime/galil/filters.txt"
+
+sleep 2
 #a global to keep track of forks with each fork incrementing it
 $globalclientnum = 1
 $moves = Hash.new
@@ -1177,9 +1191,9 @@ end
 #Start program
 
 #g =  Galil.new("bok", "90P", "./realcmds.list", 9875, "bokgmc.as.arizona.edu", 9876)
-tstr="\033]0;Galilserver\007"
-$stdout.write(tstr)
-$stdout.flush
+# tstr="\033]0;Galilserver\007"
+# $stdout.write(tstr)
+# $stdout.flush
 g =  Galil.new("", "90prime", "/home/primefocus/90prime/galil/cmds.list", 9874, "10.30.3.31", 9876)
 $stathash = Hash.new
 $filthash = Hash.new
