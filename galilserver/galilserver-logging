@@ -8,8 +8,7 @@ puts "
 █▄█ █▀█ █▄▄ █ █▄▄ ▄█ ██▄ █▀▄ ▀▄▀ ██▄ █▀▄"
 
 puts "w/ logging and fixes to locks"
-puts "\nStarting, please wait..."
-sleep 2
+
 class MultiLogger
 	# Logging class to handle logging to two outputs
 	def initialize(*targets)
@@ -19,12 +18,12 @@ class MultiLogger
 	%w(log debug info warn error fatal unknown).each do |m|
 		define_method(m) do |*args|
 			@targets.map { |t| t.send(m, *args) }
-    	end
-  	end
+    end
+  end
 end
 
 # Log to the console and to a file that changes daily
-stdout_log = Logger.new(STDOUT)
+stdout_log = Logger.new(STDERR)
 file_log = Logger.new('/home/primefocus/.mtnops/galilserver.log', 10, 5120000)
 puts "Log file --> /home/primefocus/.mtnops/galilserver.log"
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
@@ -40,10 +39,12 @@ $log = MultiLogger.new(stdout_log, file_log)
 $lockfile = "/tmp/galil.lock"
 $statefile = "/home/primefocus/galil.state"
 
-puts "Lock file --> #{$lockfile}"
+puts "\nLock file --> #{$lockfile}"
 puts "State file --> #{$statefile}"
 puts "Commands file --> /home/primefocus/90prime/galil/cmds.list"
-puts "Filter files --> /home/primefocus/90prime/galil/filters.txt"
+puts "Filter file --> /home/primefocus/90prime/galil/filters.txt"
+
+puts "\nStarting, please wait..."
 
 sleep 2
 #a global to keep track of forks with each fork incrementing it
@@ -95,6 +96,7 @@ class Galil
 	begin
 		$log.debug("Entering function: #{__method__}")
 		$log.info("Opening socket to galil")
+		$galilsock = TCPSocket.new("10.30.3.31", galilport)
 		$log.info("Starting command server")
 		@serversock = TCPServer.new( "", serverport)	
 		$log.info("Command server listening")
