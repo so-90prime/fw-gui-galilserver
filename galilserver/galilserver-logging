@@ -24,8 +24,8 @@ end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDERR)
-file_log = Logger.new('/home/primefocus/.mtnops/galilserver.log', 10, 5120000)
-puts "Log file --> /home/primefocus/.mtnops/galilserver.log"
+file_log = Logger.new(File.open('/home/primefocus/.mtnops/galilserver.log', 'a')
+puts "\nLog file --> /home/primefocus/.mtnops/galilserver.log"
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
 file_log.level = Logger::DEBUG
@@ -39,12 +39,12 @@ $log = MultiLogger.new(stdout_log, file_log)
 $lockfile = "/tmp/galil.lock"
 $statefile = "/home/primefocus/galil.state"
 
-puts "\nLock file --> #{$lockfile}"
+puts "Lock file --> #{$lockfile}"
 puts "State file --> #{$statefile}"
 puts "Commands file --> /home/primefocus/90prime/galil/cmds.list"
 puts "Filter file --> /home/primefocus/90prime/galil/filters.txt"
 
-puts "\nStarting, please wait..."
+puts "\nStarting, please wait...\n"
 
 sleep 2
 #a global to keep track of forks with each fork incrementing it
