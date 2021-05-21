@@ -24,7 +24,7 @@ end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDERR)
-file_log = Logger.new(File.open('/home/primefocus/.mtnops/galilserver.log', 'a')
+file_log = Logger.new(File.open('/home/primefocus/.mtnops/galilserver.log', 'a'))
 puts "\nLog file --> /home/primefocus/.mtnops/galilserver.log"
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
