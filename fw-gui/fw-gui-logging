@@ -26,13 +26,13 @@ class MultiLogger
 	%w(log debug info warn error fatal unknown).each do |m|
 		define_method(m) do |*args|
 			@targets.map { |t| t.send(m, *args) }
-    	end
-  	end
+		end
+	end
 end
 
 # Log to the console and to a file that changes daily
 stdout_log = Logger.new(STDOUT)
-file_log = Logger.new('fw-gui.log', 10, 5120000)
+file_log = Logger.new('/home/primefocus/.mtnops/fw-gui.log', "monthly")
 
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
@@ -127,12 +127,12 @@ class Galil
 		try = 1
 		good = false
 		while !good
-			$log.info("Attempt: #{try}")
-			$log.info("Sending: #{s}")
+			$log.debug("Attempt: #{try}")
+			$log.debug("Sending: #{s}")
 			@cs.send(s, 0)
 			rbuf = String.new
 			rbuf = @cs.recv(300)
-			$log.info("Response: #{rbuf}")
+			$log.debug("Response: #{rbuf}")
 			$log.debug("Length of response: #{rbuf.length}")
 			if /\?/.match(rbuf) != nil
 				$log.error($error)
@@ -165,7 +165,7 @@ class Galil
 
 	def sendreadn(s, n)
 		$log.debug("Entering function: #{__method__}")
-		$log.info("Sending: #{s}")
+		$log.debug("Sending: #{s}")
 		@cs.send(s, 0)
 		cnt = 0
 		buf = String.new
@@ -179,7 +179,7 @@ class Galil
 			$log.debug("Waiting for #{rn} more bytes.")
 		end
 		$log.debug("All #{n} bytes received.")
-		$log.info("Received: #{buf[4,buf.length]}")
+		$log.debug("Received: #{buf[4,buf.length]}")
 		return buf[4,buf.length]
 	end
 	$log.debug("Exiting function:  #{__method__}")
@@ -255,7 +255,7 @@ def setfilterbuttons
        			 tooltips.set_tip($radiobutton[i - 1], "Click to select #{filtername} Filter", nil)
 			$radiobutton[i - 1].signal_connect("clicked") do
 				$log.debug("Button clicked: SELECT FILTER")
-				$log.info("Requested filter: #{filtername}")
+				$log.debug("Requested filter: #{filtername}")
 				fmc = $filterhash[filtername]
 				$gc.send("SETREQFILT #{fmc};")
 				if /OK:/.match(r) == nil
@@ -492,7 +492,7 @@ $lbut.signal_connect("clicked") do
 	$popbut.set_sensitive(false)
 	$popdonebut.set_sensitive(false)
 	writefwguistatefile
-	$log.info("Filter was loaded.")
+	$log.debug("Filter was loaded.")
 end
 #unload button
 $ulbut = Gtk::Button.new("Unload")
@@ -510,7 +510,7 @@ $ulbut.signal_connect("clicked") do
 	$popbut.set_sensitive(true)
 	# testing this popdone add
 	$popdonebut.set_sensitive(false)
-    $log.info("Filter was removed.")
+    $log.debug("Filter was removed.")
 end
 $ulbut.set_sensitive(false)
 $vb.pack_start($selbut, true, true, 0)
@@ -524,10 +524,10 @@ $filtrdbut.set_name("filtrdbutton")
 filtrdtooltip = Gtk::Tooltips.new
 filtrdtooltip.set_tip($filtrdbut, "Click to read filter codes", nil)
 $filtrdbut.signal_connect("clicked") do
-	$log.info("Button clicked: READ FILTERS")
+	$log.debug("Button clicked: READ FILTERS")
 	$fwguistatehash["filtersread"] = "no"
 	$fwguistatehash["filterlist"] = ""
-	$log.info("Reading filters.")
+	$log.debug("Reading filters.")
 	filtrd
 	fl = ""
 	(0..5).each do |e|
@@ -550,7 +550,6 @@ itooltip.set_tip($ibut, "Click to initialize filterwheel", nil)
 $ibut.signal_connect("clicked") do
 	$log.debug("Button clicked: INITIALIZE")
 	r = $gc.send("SHOW FILTISIN")
-	#$log.info("filtisin #{r}")
 	$fwguistatehash["initialized"] = "no"
 	initfw
 	setfilterbuttons
@@ -698,7 +697,7 @@ if /OK/.match(r) == nil
 else
 	d = r.split(/:/, 2)
 	$afocusav.value= d[1].to_i
-	$log.info("A intial: #{$afocusav.value}")
+	$log.debug("A intial: #{$afocusav.value}")
 end
 r = $gc.send("SHOW DISTB")
 if /OK/.match(r) == nil
@@ -706,7 +705,7 @@ if /OK/.match(r) == nil
 else
 	d = r.split(/:/, 2)
 	$bfocusav.value= d[1].to_i
-	$log.info("B initial: #{$bfocusav.value}")
+	$log.debug("B initial: #{$bfocusav.value}")
 end
 r = $gc.send("SHOW DISTC")
 if /OK/.match(r) == nil
@@ -714,7 +713,7 @@ if /OK/.match(r) == nil
 else
 	d = r.split(/:/, 2)
 	$cfocusav.value= d[1].to_i
-	$log.info("C initial: #{$cfocusav.value}")
+	$log.debug("C initial: #{$cfocusav.value}")
 end
 #
 #Callbacks for actuator buttons
@@ -748,11 +747,11 @@ end
 def setav
 	$log.debug("Entering function: #{__method__}")
 	$aactsteps = $afocusav.value
-	$log.info("Actuator A steps set to #{$aactsteps}")
+	$log.debug("Actuator A steps set to #{$aactsteps}")
 	$bactsteps = $bfocusav.value
-	$log.info("Actuator B steps set to #{$bactsteps}")
+	$log.debug("Actuator B steps set to #{$bactsteps}")
 	$cactsteps = $cfocusav.value
-	$log.info("Actuator C steps set to #{$cactsteps}")
+	$log.debug("Actuator C steps set to #{$cactsteps}")
 	r = $gc.send("SET DISTA #{$aactsteps}")
 	if /OK/.match(r) == nil
 		$log.error("Error setting DISTA")
@@ -774,11 +773,11 @@ fbut.signal_connect("clicked") do
 	$log.debug("Button clicked: FOCUS")
 	$focusflag = true
 	$aactsteps = $afocusav.value
-	$log.info("Focus Actuator A steps set to #{$aactsteps}")
+	$log.debug("Focus Actuator A steps set to #{$aactsteps}")
 	$bactsteps = $bfocusav.value
-	$log.info("Focus Actuator B steps set to #{$bactsteps}")
+	$log.debug("Focus Actuator B steps set to #{$bactsteps}")
 	$cactsteps = $cfocusav.value
-	$log.info("Focus Actuator C steps set to #{$cactsteps}")
+	$log.debug("Focus Actuator C steps set to #{$cactsteps}")
 	r = $gc.send("SET DISTA #{$aactsteps}")
 	if /OK/.match(r) == nil
 		$log.error("Cannot set DISTA.")
@@ -813,7 +812,7 @@ def nplane
 	npa = nparray[0]
 	npb = nparray[1]
 	npc = nparray[2]
-	$log.info("Nominal Plane values: #{npa} #{npb} #{npc}")
+	$log.debug("Nominal Plane values: #{npa} #{npb} #{npc}")
 	newa = npa.to_f + $blvdt.to_f
 	newc = npc.to_f + $blvdt.to_f
 	adiff = newa - $alvdt.to_f
@@ -847,7 +846,7 @@ def golvdt
 	bl = $blvdtsav.value.to_f / 1000.0
 	cl = $clvdtsav.value.to_f / 1000.0
 	tol = $tollvdtsav.value.to_i
-	$log.info("Will go to lvdt values A #{al} B #{bl} C #{cl} with tolerence #{tol}")
+	$log.debug("Will go to lvdt values A #{al} B #{bl} C #{cl} with tolerence #{tol}")
 	lp = 0
 	notthere = true
 	while notthere
