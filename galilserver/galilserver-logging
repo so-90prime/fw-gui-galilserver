@@ -23,14 +23,13 @@ class MultiLogger
 end
 
 # Log to the console and to a file that changes daily
-stdout_log = Logger.new(STDERR)
-file_log = Logger.new(File.open('/home/primefocus/.mtnops/galilserver.log', 'a'))
+stdout_log = Logger.new(STDOUT)
+file_log = Logger.new('/home/primefocus/.mtnops/galilserver.log', 'monthly')
 puts "\nLog file --> /home/primefocus/.mtnops/galilserver.log"
 # levels: DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN
 stdout_log.level = Logger::INFO
 file_log.level = Logger::DEBUG
-$log = MultiLogger.new(stdout_log, file_log)
-
+$log = MultiLogger.new(file_log, stdout_log)
 
 #
 #We use 'flock' to implement locking so multiple clients can talk to the
@@ -38,7 +37,7 @@ $log = MultiLogger.new(stdout_log, file_log)
 #
 $lockfile = "/tmp/galil.lock"
 $statefile = "/home/primefocus/galil.state"
-
+puts "\nLog file --> /home/primefocus/.mtnops/galilserver.log"
 puts "Lock file --> #{$lockfile}"
 puts "State file --> #{$statefile}"
 puts "Commands file --> /home/primefocus/90prime/galil/cmds.list"
@@ -372,7 +371,7 @@ attr_reader :mycli
         lf.flock(File::LOCK_UN)
 				return "?: Too many retries. Bailing out"
 			end
-   	  $log.info("client #{mycn} sending to galil: #{cmd}")
+   	  $log.debug("client #{mycn} sending to galil: #{cmd}")
       $log.debug("try: #{tn}")
       $galilsock.send(cmd, 0)
       retv = $galilsock.recv(272, 0)
@@ -391,7 +390,7 @@ attr_reader :mycli
       elsif /:/.match(retv) != nil
         last = retv.length - 2
         rv = retv.slice(0, last)
-        $log.info("galil returns OK")
+        $log.debug("galil returns OK")
 			 	try = false
 				#unset the lock
       	lf.flock(File::LOCK_UN)
@@ -424,7 +423,7 @@ attr_reader :mycli
 				return "?: Too many retries. Bailing out"
 			end
 			$log.debug("try #{tn}")
-			$log.info("sending to galil #{cmd}")
+			$log.debug("sending to galil #{cmd}")
 			$galilsock.send(cmd, 0)
 			retv = String.new
 			retv = $galilsock.read(n)
